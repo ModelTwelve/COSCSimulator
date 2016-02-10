@@ -1,0 +1,2 @@
+# COSCSimulator
+COSC UAV Simulator
