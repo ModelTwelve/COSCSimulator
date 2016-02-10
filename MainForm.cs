@@ -157,6 +157,8 @@ namespace COSCSimulator
         private Brush red = new SolidBrush(Color.Red);
         private Brush lightBlue = new SolidBrush(Color.LightBlue);
 
+        private bool simulationRunning = false;
+
         public const string directions = "Left Click Sets Current Position and Right Click Sets Target Position";
 
         public MainForm()
@@ -221,22 +223,25 @@ namespace COSCSimulator
         
         private void simulationBoard_Click(object sender, EventArgs e)
         {
-            Point point = simulationBoard.PointToClient(Cursor.Position);
-            MouseEventArgs me = (MouseEventArgs)e;
-            if (me.Button == MouseButtons.Left)
+            if (!simulationRunning)
             {
-                x1 = point.X;
-                y1 = point.Y;
-            }
-            else
-            {
-                x2 = point.X;
-                y2 = point.Y;
-            }
+                Point point = simulationBoard.PointToClient(Cursor.Position);
+                MouseEventArgs me = (MouseEventArgs)e;
+                if (me.Button == MouseButtons.Left)
+                {
+                    x1 = point.X;
+                    y1 = point.Y;
+                }
+                else
+                {
+                    x2 = point.X;
+                    y2 = point.Y;
+                }
 
-            paintSimulationBoard();
-            setCurrentPositionLabel();
-            setGoalPositionLabel();
+                paintSimulationBoard();
+                setCurrentPositionLabel();
+                setGoalPositionLabel();
+            }
         }
 
         private void simulationBoard_Paint(object sender, PaintEventArgs e)
@@ -276,25 +281,29 @@ namespace COSCSimulator
 
         private void zAxisBoard_Click(object sender, EventArgs e)
         {
-            Point point = simulationBoard.PointToClient(Cursor.Position);
-
-            MouseEventArgs me = (MouseEventArgs)e;
-            if (me.Button==MouseButtons.Left)
+            if (!simulationRunning)
             {
-                z1 = point.Y;
-            }
-            else
-            {
-                z2 = point.Y;
-            }
+                Point point = simulationBoard.PointToClient(Cursor.Position);
 
-            setCurrentPositionLabel();
-            setGoalPositionLabel();
-            paintZAxisBoard();
+                MouseEventArgs me = (MouseEventArgs)e;
+                if (me.Button == MouseButtons.Left)
+                {
+                    z1 = point.Y;
+                }
+                else
+                {
+                    z2 = point.Y;
+                }
+
+                setCurrentPositionLabel();
+                setGoalPositionLabel();
+                paintZAxisBoard();
+            }
         }
 
         private async void goButton_Click(object sender, EventArgs e)
         {
+            simulationRunning = true;
             double tX = x2 - x1;
             double tY = y2 - y1;
             double tZ = z2 - z1;
@@ -311,6 +320,7 @@ namespace COSCSimulator
             stopwatch.Stop();
             timer1.Enabled = false;
             infoLabel.Text = directions;
+            simulationRunning = false;
         }
 
 
