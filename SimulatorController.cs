@@ -31,7 +31,7 @@ namespace COSCSimulator
             double velocity)
         {
             // Make the duration (in seconds) into ticks
-            this.simulationDuration = simulationDuration * ticksPerSecond;
+            this.simulationDuration = Math.Floor(simulationDuration * ticksPerSecond);
 
             gObjSimulationBoard = simulationBoard.CreateGraphics();
             gObjZAxisBoard = zAxisBoard.CreateGraphics();
@@ -39,6 +39,16 @@ namespace COSCSimulator
             zXConstant = zAxisBoard.Size.Width / 2;
 
             buildFormation(formationNumber,startX, startY, startZ,goalX, goalY, goalZ,velocity);
+        }
+
+        public List<double> getDistances()
+        {
+            List<double> rv = new List<double>();
+            foreach(var mObj in movingObjects)
+            {
+                rv.Add(mObj.distanceFromTarget());
+            }
+            return rv;
         }
 
         private void buildFormation(int formationNumber,

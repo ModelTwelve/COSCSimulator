@@ -59,6 +59,7 @@ namespace COSCSimulator
         public int GPS()
         {
             // 5 meters = 0 to 16 ft would be approx +/- 16 ft from your actual
+            //return 0;
             return random.Next(-16, 16);
         }
 

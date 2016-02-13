@@ -25,7 +25,7 @@ namespace COSCSimulator
         private Brush yellow = new SolidBrush(Color.Yellow);
 
         private bool simulationRunning = false;
-        private double simulationDuration = 0, simulationFinalDistance = 0;
+        private double simulationDuration = 0;
 
         public const string directions = "Left Click Sets Current Position and Right Click Sets Target Position";
 
@@ -118,6 +118,7 @@ namespace COSCSimulator
 
         private async void goButton_Click(object sender, EventArgs e)
         {
+            resultsListBox.Items.Clear();
             paintSimulationBoard();
             paintZAxisBoard();
 
@@ -134,16 +135,21 @@ namespace COSCSimulator
             timer1.Enabled = true;
 
             int numberOfObjects = Convert.ToInt32(countDropDown.Text);
+            SimulatorController controller = new SimulatorController(simulationBoard, zAxisBoard, numberOfObjects, simulationDuration, x1, y1, z1, x2, y2, z2, velocity);
             await Task.Run(() =>
-            {
-                SimulatorController controller = new SimulatorController(simulationBoard, zAxisBoard, numberOfObjects, simulationDuration, x1, y1, z1, x2, y2, z2, velocity);
+            {                
                 controller.Run();
             });
             stopwatch.Stop();
             timer1.Enabled = false;
             infoLabel.Text = directions;
             simulationRunning = false;
-            this.Text = "Simulation (Distance From Target=" + Math.Round(simulationFinalDistance,4).ToString() + ")";
+
+            foreach (var distance in controller.getDistances())
+            {
+                resultsListBox.Items.Add(Math.Round(distance,2).ToString());
+            }
+
         }
 
 
