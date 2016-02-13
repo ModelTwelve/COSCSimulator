@@ -33,9 +33,9 @@
             this.infoLabel = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.zAxisBoard = new System.Windows.Forms.Panel();
-            this.CurrentPositionLabel = new System.Windows.Forms.Label();
-            this.GoalPositionLabel = new System.Windows.Forms.Label();
             this.goButton = new System.Windows.Forms.Button();
+            this.countDropDown = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // simulationBoard
@@ -70,27 +70,9 @@
             this.zAxisBoard.Click += new System.EventHandler(this.zAxisBoard_Click);
             this.zAxisBoard.Paint += new System.Windows.Forms.PaintEventHandler(this.zAxisBoard_Paint);
             // 
-            // CurrentPositionLabel
-            // 
-            this.CurrentPositionLabel.AutoSize = true;
-            this.CurrentPositionLabel.Location = new System.Drawing.Point(14, 559);
-            this.CurrentPositionLabel.Name = "CurrentPositionLabel";
-            this.CurrentPositionLabel.Size = new System.Drawing.Size(41, 13);
-            this.CurrentPositionLabel.TabIndex = 4;
-            this.CurrentPositionLabel.Text = "Current";
-            // 
-            // GoalPositionLabel
-            // 
-            this.GoalPositionLabel.AutoSize = true;
-            this.GoalPositionLabel.Location = new System.Drawing.Point(905, 559);
-            this.GoalPositionLabel.Name = "GoalPositionLabel";
-            this.GoalPositionLabel.Size = new System.Drawing.Size(29, 13);
-            this.GoalPositionLabel.TabIndex = 5;
-            this.GoalPositionLabel.Text = "Goal";
-            // 
             // goButton
             // 
-            this.goButton.Location = new System.Drawing.Point(816, 586);
+            this.goButton.Location = new System.Drawing.Point(816, 582);
             this.goButton.Name = "goButton";
             this.goButton.Size = new System.Drawing.Size(75, 23);
             this.goButton.TabIndex = 6;
@@ -98,14 +80,37 @@
             this.goButton.UseVisualStyleBackColor = true;
             this.goButton.Click += new System.EventHandler(this.goButton_Click);
             // 
+            // countDropDown
+            // 
+            this.countDropDown.DisplayMember = "1";
+            this.countDropDown.FormattingEnabled = true;
+            this.countDropDown.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3"});
+            this.countDropDown.Location = new System.Drawing.Point(687, 584);
+            this.countDropDown.Name = "countDropDown";
+            this.countDropDown.Size = new System.Drawing.Size(92, 21);
+            this.countDropDown.TabIndex = 7;
+            this.countDropDown.Text = "1";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(684, 568);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(95, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Number of Objects";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1009, 627);
+            this.ClientSize = new System.Drawing.Size(1015, 627);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.countDropDown);
             this.Controls.Add(this.goButton);
-            this.Controls.Add(this.GoalPositionLabel);
-            this.Controls.Add(this.CurrentPositionLabel);
             this.Controls.Add(this.zAxisBoard);
             this.Controls.Add(this.infoLabel);
             this.Controls.Add(this.simulationBoard);
@@ -123,9 +128,9 @@
         private System.Windows.Forms.Label infoLabel;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Panel zAxisBoard;
-        private System.Windows.Forms.Label CurrentPositionLabel;
-        private System.Windows.Forms.Label GoalPositionLabel;
         private System.Windows.Forms.Button goButton;
+        private System.Windows.Forms.ComboBox countDropDown;
+        private System.Windows.Forms.Label label1;
     }
 }
 
