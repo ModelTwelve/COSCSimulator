@@ -6,154 +6,138 @@ using System.Threading.Tasks;
 
 namespace COSCSimulator
 {
-    public class SimulatedObject
+    public class Position
     {
-        Random random;
-        
-        public double actualXPosition { get; private set; }
-        public double actualYPosition { get; private set; }
-        public double actualZPosition { get; private set; }
+        public double x=0, y=0, z=0;
+        public Position()
+        {
+        }
 
-        public double expectedXPosition { get; private set; }
-        public double expectedYPosition { get; private set; }
-        public double expectedZPosition { get; private set; }
+        public Position(double x, double y, double z)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
 
-        public double targetXPosition { get; private set; }
-        public double targetYPosition { get; private set; }
-        public double targetZPosition { get; private set; }
+        public double distanceFrom(Position target)
+        {
+            double xDistance = target.x - this.x;
+            double yDistance = target.y - this.y;
+            double zDistance = target.z - this.z;
+            double totalLength = Math.Sqrt(xDistance * xDistance + yDistance * yDistance + zDistance * zDistance);
+            return totalLength;
+        }
 
-        public double prevActualXPosition { get; private set; }
-        public double prevActualYPosition { get; private set; }
-        public double prevActualZPosition { get; private set; }
+        public void Clone(Position p)
+        {
+            this.x = p.x;
+            this.y = p.y;
+            this.z = p.z;
+        }
+    }
 
-        public double prevExpectedXPosition { get; private set; }
-        public double prevExpectedYPosition { get; private set; }
-        public double prevExpectedZPosition { get; private set; }
+    public class SimulatedObject
+    {        
+        public const int objectSize = 4;
 
-        public double speed { get; private set; }
+        private PositionProtocolLogic positionLogic;
+        private Random random;
 
-        public int ticks = 0;
+        public Position actualPosition;
+        public Position prevActualPosition;
+        public Position expectedPosition;
+        public Position prevExpectedPosition;
+        public Position targetPosition;    
 
-        private double ticksPerSecond = 1000, tickSpeed;
+        public double speed { get; private set; }       
+
+        private double tickSpeed;
 
         public SimulatedObject(int randomSeed, double startX, double startY, double startZ, double goalX, double goalY, double goalZ, double velocity)
         {
             random = new Random(randomSeed);
-            actualXPosition = startX;
-            actualYPosition = startY;
-            actualZPosition = startZ;
 
-            expectedXPosition = startX;
-            expectedYPosition = startY;
-            expectedZPosition = startZ;
+            positionLogic = new PositionProtocolLogic(random);
 
-            targetXPosition = goalX;
-            targetYPosition = goalY;
-            targetZPosition = goalZ;
+            actualPosition = new Position(startX, startY, startZ);
+            prevActualPosition = new Position();
+            expectedPosition = new Position(startX, startY, startZ);
+            prevExpectedPosition = new Position();
+            targetPosition = new Position(goalX, goalY, goalZ);            
 
             // I want to 
             speed = velocity;
-            tickSpeed = speed / ticksPerSecond;
+            tickSpeed = speed / SimulatorController.ticksPerSecond;
         }
-
-        public int GPS()
-        {
-            // 5 meters = 0 to 16 ft would be approx +/- 16 ft from your actual
-            //return 0;
-            return random.Next(-16, 16);
-        }
-
+        
         public bool areWeThereYet()
         {
-            return actualXPosition == targetXPosition && actualYPosition == targetYPosition && actualZPosition == targetZPosition;
+            return actualPosition.x == targetPosition.x && 
+                actualPosition.y == targetPosition.y && 
+                actualPosition.z == targetPosition.z;
         }
 
         public double distanceFromTarget()
         {
-            double tX = targetXPosition - actualXPosition;
-            double tY = targetYPosition - actualYPosition;
-            double tZ = targetZPosition - actualZPosition;
-            double tLength = Math.Sqrt(tX * tX + tY * tY + tZ * tZ);
-            return tLength;
+            return actualPosition.distanceFrom(targetPosition);
         }
 
         public void stepTowards()
         {
-            ++ticks;
+            positionLogic.incTicks();
 
-            prevActualXPosition = actualXPosition;
-            prevActualYPosition = actualYPosition;
-            prevActualZPosition = actualZPosition;
-
-            prevExpectedXPosition = expectedXPosition;
-            prevExpectedYPosition = expectedYPosition;
-            prevExpectedZPosition = expectedZPosition;
-
-            // We are actually here
-            double actualXDistance = targetXPosition - actualXPosition;
-            double actualYDistance = targetYPosition - actualYPosition;
-            double actualZDistance = targetZPosition - actualZPosition;
+            prevActualPosition.Clone(actualPosition);
+            prevExpectedPosition.Clone(expectedPosition);            
 
             // We think we're here
-            double expectedXDistance = targetXPosition - expectedXPosition;
-            double expectedYDistance = targetYPosition - expectedYPosition;
-            double expectedZDistance = targetZPosition - expectedZPosition;
+            double expectedXDistance = targetPosition.x - expectedPosition.x;
+            double expectedYDistance = targetPosition.y - expectedPosition.y;
+            double expectedZDistance = targetPosition.z - expectedPosition.z;
 
             // We actually need to move this far
-            double tLength = Math.Sqrt(actualXDistance * actualXDistance + actualYDistance * actualYDistance + actualZDistance * actualZDistance);
+            double actualDistance = actualPosition.distanceFrom(targetPosition);
             // We think we need to move this far
-            double eLength = Math.Sqrt(expectedXDistance * expectedXDistance + expectedYDistance * expectedYDistance + expectedZDistance * expectedZDistance);
+            double expectedDistance = expectedPosition.distanceFrom(targetPosition);
 
-            double expectedXTickDistance = (tickSpeed * expectedXDistance / eLength);
-            double expectedYTickDistance = (tickSpeed * expectedYDistance / eLength);
-            double expectedZTickDistance = (tickSpeed * expectedZDistance / eLength);
+            double expectedXTickDistance = (tickSpeed * expectedXDistance / expectedDistance);
+            double expectedYTickDistance = (tickSpeed * expectedYDistance / expectedDistance);
+            double expectedZTickDistance = (tickSpeed * expectedZDistance / expectedDistance);
 
-            if (tLength > tickSpeed)
+            if (actualDistance > tickSpeed)
             {
-                // move towards the goal
-                //actualXPosition = actualXPosition + (speed * tX / tLength);
-                //actualYPosition = actualYPosition + (speed * tY / tLength);
-                //actualZPosition = actualZPosition + (speed * tZ / tLength);
-
                 // Move towards the goal using where we think we are
                 // and allowing that to affect the actual positioning
-                actualXPosition = actualXPosition + expectedXTickDistance;
-                actualYPosition = actualYPosition + expectedYTickDistance;
-                actualZPosition = actualZPosition + expectedZTickDistance;
+                actualPosition.x += expectedXTickDistance;
+                actualPosition.y += expectedYTickDistance;
+                actualPosition.z += expectedZTickDistance;
 
-                // Pretend like the GPS updates every second
-                if (ticks % Convert.ToInt32(ticksPerSecond) == 0)
+                if (positionLogic.shouldMeasure())
                 {
-                    expectedXPosition = actualXPosition + GPS();
-                    expectedYPosition = actualYPosition + GPS();
-                    expectedZPosition = actualZPosition + GPS();
+                    positionLogic.getExpectedPosition(expectedPosition, actualPosition);
                 }
                 else
                 {
                     // Else continue on your wrong path
-                    expectedXPosition = expectedXPosition + expectedXTickDistance;
-                    expectedYPosition = expectedYPosition + expectedYTickDistance;
-                    expectedZPosition = expectedZPosition + expectedZTickDistance;
+                    expectedPosition.x += expectedXTickDistance;
+                    expectedPosition.y += expectedYTickDistance;
+                    expectedPosition.z += expectedZTickDistance;
                 }
             }
             else
             {
                 // Last step
-                if (tLength > tickSpeed)
+                if (actualDistance > tickSpeed)
                 {
-                    actualXPosition = actualXPosition + expectedXTickDistance;
-                    actualYPosition = actualYPosition + expectedYTickDistance;
-                    actualZPosition = actualZPosition + expectedZTickDistance;
+                    actualPosition.x += expectedXTickDistance;
+                    actualPosition.y += expectedYTickDistance;
+                    actualPosition.z += expectedZTickDistance;
 
-                    expectedXPosition = actualXPosition;
-                    expectedYPosition = actualYPosition;
-                    expectedZPosition = actualZPosition;
+                    expectedPosition.Clone(actualPosition);
                 }
                 else
                 {
-                    actualXPosition = targetXPosition;
-                    actualYPosition = targetYPosition;
-                    actualZPosition = targetZPosition;
+                    actualPosition.Clone(targetPosition);
                 }
             }
         }

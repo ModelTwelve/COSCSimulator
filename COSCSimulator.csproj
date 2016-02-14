@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GPS_Module.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -52,6 +53,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PositionProtocolLogic.cs" />
     <Compile Include="SimulatedObject.cs" />
     <Compile Include="SimulatorController.cs" />
     <EmbeddedResource Include="MainForm.resx">

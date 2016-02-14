@@ -10,14 +10,14 @@ namespace COSCSimulator
 {
     public class SimulatorController
     {
+        public const double ticksPerSecond = 1000;
+
         List<SimulatedObject> movingObjects = new List<SimulatedObject>();
         private double simulationDuration;
         private float zXConstant;
-        private int ticksPerSecond = 1000;
 
         Graphics gObjSimulationBoard, gObjZAxisBoard;
-
-        private int size = 4;
+        
         private Brush lightGreen = new SolidBrush(Color.LightGreen);
         private Brush black = new SolidBrush(Color.Black);
         private Brush red = new SolidBrush(Color.Red);
@@ -31,7 +31,7 @@ namespace COSCSimulator
             double velocity)
         {
             // Make the duration (in seconds) into ticks
-            this.simulationDuration = Math.Floor(simulationDuration * ticksPerSecond);
+            this.simulationDuration = Math.Floor(simulationDuration * SimulatorController.ticksPerSecond);
 
             gObjSimulationBoard = simulationBoard.CreateGraphics();
             gObjZAxisBoard = zAxisBoard.CreateGraphics();
@@ -76,8 +76,8 @@ namespace COSCSimulator
             // Redraw goals
             foreach (var mObj in movingObjects)
             {
-                gObjSimulationBoard.FillRectangle(red, Convert.ToSingle(mObj.targetXPosition), Convert.ToSingle(mObj.targetYPosition), size, size);
-                gObjZAxisBoard.FillRectangle(red, zXConstant, Convert.ToSingle(mObj.targetZPosition), size, size);
+                gObjSimulationBoard.FillRectangle(red, Convert.ToSingle(mObj.targetPosition.x), Convert.ToSingle(mObj.targetPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);
+                gObjZAxisBoard.FillRectangle(red, zXConstant, Convert.ToSingle(mObj.targetPosition.z), SimulatedObject.objectSize, SimulatedObject.objectSize);
             }
         }
 
@@ -92,9 +92,9 @@ namespace COSCSimulator
             while (!allDone)
             {
                 ++steps;
-                if (steps % 100 == 0)
+                if (steps % SimulatorController.ticksPerSecond == 0)
                 {
-                    Task.Delay(delay).Wait();
+                    //Task.Delay(delay).Wait();
                 }
 
                 // Have we already taken enough steps to end the simulation?
@@ -119,12 +119,12 @@ namespace COSCSimulator
 
         private void showNewLocation(SimulatedObject mObj)
         {
-            gObjSimulationBoard.FillRectangle(yellow, Convert.ToInt32(mObj.prevActualXPosition), Convert.ToInt32(mObj.prevActualYPosition), size, size);            
-            gObjSimulationBoard.FillRectangle(black, Convert.ToInt32(mObj.actualXPosition), Convert.ToInt32(mObj.actualYPosition), size, size);
+            gObjSimulationBoard.FillRectangle(yellow, Convert.ToInt32(mObj.prevActualPosition.x), Convert.ToInt32(mObj.prevActualPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);            
+            gObjSimulationBoard.FillRectangle(black, Convert.ToInt32(mObj.actualPosition.x), Convert.ToInt32(mObj.actualPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);
             //gObjSimulationBoard.FillRectangle(yellow, Convert.ToInt32(mObj.prevActualXPosition) + (size / 2), Convert.ToInt32(mObj.prevActualYPosition) + (size / 2), 1, 1);
 
-            gObjZAxisBoard.FillRectangle(yellow, zXConstant, Convert.ToInt32(mObj.prevActualZPosition), size, size);            
-            gObjZAxisBoard.FillRectangle(black, zXConstant, Convert.ToInt32(mObj.actualZPosition), size, size);
+            gObjZAxisBoard.FillRectangle(yellow, zXConstant, Convert.ToInt32(mObj.prevActualPosition.z), SimulatedObject.objectSize, SimulatedObject.objectSize);            
+            gObjZAxisBoard.FillRectangle(black, zXConstant, Convert.ToInt32(mObj.actualPosition.z), SimulatedObject.objectSize, SimulatedObject.objectSize);
             //gObjZAxisBoard.FillRectangle(yellow, zXConstant + (size / 2), Convert.ToInt32(mObj.prevActualZPosition), 1, 1);
         }
     }

@@ -13,16 +13,14 @@ namespace COSCSimulator
 {
     public partial class MainForm : Form
     {
-        private int x1 = 20, y1 = 20, x2 = 100, y2 = 100, z1 = 20, z2 = 100;
+        private int x1, y1, x2, y2, z1, z2;
         private int zXConstant;
         private double velocity = 44;
         private Stopwatch stopwatch = new Stopwatch();
-        private int size = 4;
         private Brush lightGreen = new SolidBrush(Color.LightGreen);
         private Brush black = new SolidBrush(Color.Black);
         private Brush red = new SolidBrush(Color.Red);
         private Brush lightBlue = new SolidBrush(Color.LightBlue);
-        private Brush yellow = new SolidBrush(Color.Yellow);
 
         private bool simulationRunning = false;
         private double simulationDuration = 0;
@@ -33,9 +31,14 @@ namespace COSCSimulator
         {
             InitializeComponent();
 
-            x2 = simulationBoard.Size.Width - 20;
-            y2 = simulationBoard.Size.Height - 20;
-            z2 = zAxisBoard.Size.Height - 20;
+            // Initial board setup
+            x1 = simulationBoard.Size.Width / 4;
+            y1 = simulationBoard.Size.Height / 10;
+            z1 = zAxisBoard.Size.Height / 3;
+
+            x2 = simulationBoard.Size.Width / 2;
+            y2 = simulationBoard.Size.Height - simulationBoard.Size.Height/10;
+            z2 = zAxisBoard.Size.Height / 2;
 
             zXConstant = zAxisBoard.Size.Width / 2;
             
@@ -72,8 +75,8 @@ namespace COSCSimulator
         {
             Graphics gObj = simulationBoard.CreateGraphics();
             gObj.FillRectangle(lightGreen, 0, 0, simulationBoard.Size.Width, simulationBoard.Size.Height);
-            gObj.FillRectangle(black, x1, y1, size, size);
-            gObj.FillRectangle(red, x2, y2, size, size);
+            gObj.FillRectangle(black, x1, y1, SimulatedObject.objectSize, SimulatedObject.objectSize);
+            gObj.FillRectangle(red, x2, y2, SimulatedObject.objectSize, SimulatedObject.objectSize);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -92,8 +95,8 @@ namespace COSCSimulator
             // Reinit the board
             gObj.FillRectangle(lightBlue, 0, 0, zAxisBoard.Size.Width, zAxisBoard.Size.Height);
 
-            gObj.FillRectangle(black, zXConstant, z1, size, size);
-            gObj.FillRectangle(red, zXConstant, z2, size, size);
+            gObj.FillRectangle(black, zXConstant, z1, SimulatedObject.objectSize, SimulatedObject.objectSize);
+            gObj.FillRectangle(red, zXConstant, z2, SimulatedObject.objectSize, SimulatedObject.objectSize);
         }
 
         private void zAxisBoard_Click(object sender, EventArgs e)
