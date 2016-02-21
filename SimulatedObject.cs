@@ -54,10 +54,8 @@ namespace COSCSimulator
 
         private double tickSpeed;
 
-        public SimulatedObject(int randomSeed, double startX, double startY, double startZ, double goalX, double goalY, double goalZ, double velocity)
+        public SimulatedObject(double startX, double startY, double startZ, double goalX, double goalY, double goalZ, double velocity)
         {
-            random = new Random(randomSeed);
-
             positionLogic = new PositionProtocolLogic(random);
 
             actualPosition = new Position(startX, startY, startZ);
@@ -141,5 +139,10 @@ namespace COSCSimulator
                 }
             }
         }
+
+        //public static int[] pickRandomXYZWithinSphere(int radius)
+        //{
+
+        //}
     }
 }

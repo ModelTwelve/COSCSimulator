@@ -54,6 +54,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PositionProtocolLogic.cs" />
+    <Compile Include="SimRandom.cs" />
     <Compile Include="SimulatedObject.cs" />
     <Compile Include="SimulatorController.cs" />
     <EmbeddedResource Include="MainForm.resx">

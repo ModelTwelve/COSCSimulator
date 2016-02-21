@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace COSCSimulator
 {
     public class SimulatorController
     {
-        public const double ticksPerSecond = 1000;
+        public const double ticksPerSecond = 1000;        
 
         List<SimulatedObject> movingObjects = new List<SimulatedObject>();
         private double simulationDuration;
@@ -34,12 +35,16 @@ namespace COSCSimulator
             this.simulationDuration = Math.Floor(simulationDuration * SimulatorController.ticksPerSecond);
 
             gObjSimulationBoard = simulationBoard.CreateGraphics();
+            //gObjSimulationBoard.SmoothingMode = SmoothingMode.AntiAlias;
+            //gObjSimulationBoard.ScaleTransform(2, 2);
             gObjZAxisBoard = zAxisBoard.CreateGraphics();
 
             zXConstant = zAxisBoard.Size.Width / 2;
 
             buildFormation(formationNumber,startX, startY, startZ,goalX, goalY, goalZ,velocity);
         }
+
+        
 
         public List<double> getDistances()
         {
@@ -55,21 +60,20 @@ namespace COSCSimulator
             double startX, double startY, double startZ,
             double goalX, double goalY, double goalZ,
             double velocity)
-        {
-            Random random = new Random();            
+        {                      
             switch (formationNumber)
             {
                 case 1:
-                    movingObjects.Add(new SimulatedObject(random.Next(Int32.MinValue,Int32.MaxValue),startX, startY, startZ, goalX, goalY, goalZ, velocity));
+                    movingObjects.Add(new SimulatedObject(startX, startY, startZ, goalX, goalY, goalZ, velocity));
                     break;
                 case 2:
-                    movingObjects.Add(new SimulatedObject(random.Next(Int32.MinValue, Int32.MaxValue),startX, startY, startZ, goalX, goalY, goalZ, velocity));
-                    movingObjects.Add(new SimulatedObject(random.Next(Int32.MinValue, Int32.MaxValue),startX - 40, startY, startZ, goalX - 40, goalY, goalZ, velocity));
+                    movingObjects.Add(new SimulatedObject(startX, startY, startZ, goalX, goalY, goalZ, velocity));
+                    movingObjects.Add(new SimulatedObject(startX - 40, startY, startZ, goalX - 40, goalY, goalZ, velocity));
                     break;
                 case 3:
-                    movingObjects.Add(new SimulatedObject(random.Next(Int32.MinValue, Int32.MaxValue),startX, startY, startZ, goalX, goalY, goalZ, velocity));
-                    movingObjects.Add(new SimulatedObject(random.Next(Int32.MinValue, Int32.MaxValue),startX - 40, startY, startZ, goalX - 40, goalY, goalZ, velocity));
-                    movingObjects.Add(new SimulatedObject(random.Next(Int32.MinValue, Int32.MaxValue),startX + 40, startY, startZ, goalX + 40, goalY, goalZ, velocity));
+                    movingObjects.Add(new SimulatedObject(startX, startY, startZ, goalX, goalY, goalZ, velocity));
+                    movingObjects.Add(new SimulatedObject(startX - 40, startY, startZ, goalX - 40, goalY, goalZ, velocity));
+                    movingObjects.Add(new SimulatedObject(startX + 40, startY, startZ, goalX + 40, goalY, goalZ, velocity));
                     break;
             }
 

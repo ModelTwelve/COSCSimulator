@@ -8,13 +8,10 @@ namespace COSCSimulator
 {
     public class GPS_Module
     {
-        const int minValue = -16; // Ft
-        const int maxValue = 16; // Ft        
-
-        Random random;
-        public GPS_Module(Random random)
+        const double maxRadius = 16; // Ft        
+        
+        public GPS_Module()
         {
-            this.random = random;
         }
 
         public bool shouldMeasure(int ticks)
@@ -26,9 +23,12 @@ namespace COSCSimulator
         public void Calculate(Position expectedPosition, Position actualPosition)
         {
             // 5 meters = 0 to 16 ft would be approx +/- 16 ft from your actual
-            expectedPosition.x = actualPosition.x + random.Next(minValue, maxValue);
-            expectedPosition.y = actualPosition.y + random.Next(minValue, maxValue);
-            expectedPosition.z = actualPosition.z + random.Next(minValue, maxValue);
+
+            double[] randomPoint = SimRandom.GetRandomPointWithinSphere(maxRadius);
+
+            expectedPosition.x = actualPosition.x + randomPoint[0];
+            expectedPosition.y = actualPosition.y + randomPoint[1];
+            expectedPosition.z = actualPosition.z + randomPoint[2];
         }
     }
 }

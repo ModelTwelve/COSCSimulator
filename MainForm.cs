@@ -73,10 +73,12 @@ namespace COSCSimulator
 
         private void paintSimulationBoard()
         {
-            Graphics gObj = simulationBoard.CreateGraphics();
+            Graphics gObj = simulationBoard.CreateGraphics();            
+
             gObj.FillRectangle(lightGreen, 0, 0, simulationBoard.Size.Width, simulationBoard.Size.Height);
             gObj.FillRectangle(black, x1, y1, SimulatedObject.objectSize, SimulatedObject.objectSize);
             gObj.FillRectangle(red, x2, y2, SimulatedObject.objectSize, SimulatedObject.objectSize);
+            
         }
 
         private void timer1_Tick(object sender, EventArgs e)

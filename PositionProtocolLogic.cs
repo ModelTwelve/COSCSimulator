@@ -8,7 +8,6 @@ namespace COSCSimulator
 {
     public class PositionProtocolLogic
     {
-        private Random random;
         private GPS_Module gps;
 
         private int ticks = 0;
@@ -19,9 +18,8 @@ namespace COSCSimulator
         {
             activePerfectPosition = false;
             activeGPS = true;
-
-            this.random = random;
-            gps = new GPS_Module(random);
+            
+            gps = new GPS_Module();
         }
 
         public void getExpectedPosition(Position expectedPosition, Position actualPosition)
