@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.simulationBoard = new System.Windows.Forms.Panel();
+            this.simulationPictureBox = new System.Windows.Forms.PictureBox();
             this.infoLabel = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.zAxisBoard = new System.Windows.Forms.Panel();
@@ -42,17 +43,32 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.simulationBoard.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.simulationPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // simulationBoard
             // 
+            this.simulationBoard.AutoScroll = true;
+            this.simulationBoard.AutoScrollMinSize = new System.Drawing.Size(5400, 5400);
+            this.simulationBoard.Controls.Add(this.simulationPictureBox);
             this.simulationBoard.Location = new System.Drawing.Point(12, 12);
             this.simulationBoard.Name = "simulationBoard";
             this.simulationBoard.Size = new System.Drawing.Size(879, 544);
             this.simulationBoard.TabIndex = 1;
-            this.simulationBoard.Click += new System.EventHandler(this.simulationBoard_Click);
             this.simulationBoard.Paint += new System.Windows.Forms.PaintEventHandler(this.simulationBoard_Paint);
+            // 
+            // simulationPictureBox
+            // 
+            this.simulationPictureBox.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.simulationPictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("simulationPictureBox.BackgroundImage")));
+            this.simulationPictureBox.Location = new System.Drawing.Point(12, 15);
+            this.simulationPictureBox.Name = "simulationPictureBox";
+            this.simulationPictureBox.Size = new System.Drawing.Size(5280, 5280);
+            this.simulationPictureBox.TabIndex = 0;
+            this.simulationPictureBox.TabStop = false;
+            this.simulationPictureBox.Click += new System.EventHandler(this.simulationPictureBox_Click);
             // 
             // infoLabel
             // 
@@ -179,6 +195,8 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "MainForm";
             this.Text = "MainForm";
+            this.simulationBoard.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.simulationPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -199,6 +217,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox simulationPictureBox;
     }
 }
 

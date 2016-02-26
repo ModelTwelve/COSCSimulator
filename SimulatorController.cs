@@ -17,6 +17,7 @@ namespace COSCSimulator
         private double simulationDuration;
         private float zXConstant;
 
+        PictureBox simulationPictureBox;
         Graphics gObjSimulationBoard, gObjZAxisBoard;
         
         private Brush lightGreen = new SolidBrush(Color.LightGreen);
@@ -25,7 +26,7 @@ namespace COSCSimulator
         private Brush lightBlue = new SolidBrush(Color.LightBlue);
         private Brush yellow = new SolidBrush(Color.Yellow);
 
-        public SimulatorController(Panel simulationBoard, Panel zAxisBoard,
+        public SimulatorController(PictureBox simulationPictureBox, Panel zAxisBoard,
             int formationNumber, double simulationDuration,
             double startX, double startY, double startZ, 
             double goalX, double goalY, double goalZ, 
@@ -34,7 +35,8 @@ namespace COSCSimulator
             // Make the duration (in seconds) into ticks
             this.simulationDuration = Math.Floor(simulationDuration * SimulatorController.ticksPerSecond);
 
-            gObjSimulationBoard = simulationBoard.CreateGraphics();
+            this.simulationPictureBox = simulationPictureBox;
+            gObjSimulationBoard = Graphics.FromImage(this.simulationPictureBox.Image);
             //gObjSimulationBoard.SmoothingMode = SmoothingMode.AntiAlias;
             //gObjSimulationBoard.ScaleTransform(2, 2);
             gObjZAxisBoard = zAxisBoard.CreateGraphics();
@@ -43,8 +45,6 @@ namespace COSCSimulator
 
             buildFormation(formationNumber,startX, startY, startZ,goalX, goalY, goalZ,velocity);
         }
-
-        
 
         public List<double> getDistances()
         {
@@ -82,6 +82,7 @@ namespace COSCSimulator
             {
                 gObjSimulationBoard.FillRectangle(red, Convert.ToSingle(mObj.targetPosition.x), Convert.ToSingle(mObj.targetPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);
                 gObjZAxisBoard.FillRectangle(red, zXConstant, Convert.ToSingle(mObj.targetPosition.z), SimulatedObject.objectSize, SimulatedObject.objectSize);
+                gObjSimulationBoard.DrawEllipse(System.Drawing.Pens.Purple, Convert.ToSingle(mObj.targetPosition.x), Convert.ToSingle(mObj.targetPosition.y),32,32);
             }
         }
 
@@ -118,6 +119,7 @@ namespace COSCSimulator
 
                     showNewLocation(mObj);
                 }
+                simulationPictureBox.Invalidate();
             }            
         }
 
