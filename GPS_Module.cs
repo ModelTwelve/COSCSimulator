@@ -8,7 +8,7 @@ namespace COSCSimulator
 {
     public class GPS_Module
     {
-        const double maxRadius = 16; // Ft        
+        public const float maxRadius = 16; // Ft        
         
         public GPS_Module()
         {

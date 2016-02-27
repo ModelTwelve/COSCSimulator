@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -11,22 +12,22 @@ namespace COSCSimulator
 {
     public class SimulatorController
     {
-        public const double ticksPerSecond = 1000;        
+        public const double ticksPerSecond = 1000;
 
         List<SimulatedObject> movingObjects = new List<SimulatedObject>();
         private double simulationDuration;
         private float zXConstant;
 
-        PictureBox simulationPictureBox;
-        Graphics gObjSimulationBoard, gObjZAxisBoard;
-        
-        private Brush lightGreen = new SolidBrush(Color.LightGreen);
+        PictureBox xyPictureBox, zPictureBox;
+        Graphics xyGraphics, zGraphics;
+        int speedTrackbarValue;
+
         private Brush black = new SolidBrush(Color.Black);
         private Brush red = new SolidBrush(Color.Red);
-        private Brush lightBlue = new SolidBrush(Color.LightBlue);
         private Brush yellow = new SolidBrush(Color.Yellow);
 
-        public SimulatorController(PictureBox simulationPictureBox, Panel zAxisBoard,
+        public SimulatorController(PictureBox xyPictureBox, PictureBox zictureBox,
+            ref int speedTrackbarValue,
             int formationNumber, double simulationDuration,
             double startX, double startY, double startZ, 
             double goalX, double goalY, double goalZ, 
@@ -35,13 +36,19 @@ namespace COSCSimulator
             // Make the duration (in seconds) into ticks
             this.simulationDuration = Math.Floor(simulationDuration * SimulatorController.ticksPerSecond);
 
-            this.simulationPictureBox = simulationPictureBox;
-            gObjSimulationBoard = Graphics.FromImage(this.simulationPictureBox.Image);
-            //gObjSimulationBoard.SmoothingMode = SmoothingMode.AntiAlias;
-            //gObjSimulationBoard.ScaleTransform(2, 2);
-            gObjZAxisBoard = zAxisBoard.CreateGraphics();
+            this.xyPictureBox = xyPictureBox;
+            this.zPictureBox = zictureBox;
+            xyGraphics = Graphics.FromImage(this.xyPictureBox.Image);
+            zGraphics = Graphics.FromImage(this.zPictureBox.Image);
 
-            zXConstant = zAxisBoard.Size.Width / 2;
+            this.speedTrackbarValue = speedTrackbarValue;
+
+            //gObjSimulationBoard.SmoothingMode = SmoothingMode.AntiAlias;
+            //gObjZAxisBoard.SmoothingMode = SmoothingMode.AntiAlias;
+
+            //gObjSimulationBoard.ScaleTransform(2, 2);
+
+            zXConstant = zictureBox.Size.Width / 2;
 
             buildFormation(formationNumber,startX, startY, startZ,goalX, goalY, goalZ,velocity);
         }
@@ -78,17 +85,21 @@ namespace COSCSimulator
             }
 
             // Redraw goals
+            Pen purplePen = new Pen(Color.Purple, 3);
             foreach (var mObj in movingObjects)
             {
-                gObjSimulationBoard.FillRectangle(red, Convert.ToSingle(mObj.targetPosition.x), Convert.ToSingle(mObj.targetPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);
-                gObjZAxisBoard.FillRectangle(red, zXConstant, Convert.ToSingle(mObj.targetPosition.z), SimulatedObject.objectSize, SimulatedObject.objectSize);
-                gObjSimulationBoard.DrawEllipse(System.Drawing.Pens.Purple, Convert.ToSingle(mObj.targetPosition.x), Convert.ToSingle(mObj.targetPosition.y),32,32);
+                xyGraphics.FillRectangle(red, Convert.ToSingle(mObj.targetPosition.x), Convert.ToSingle(mObj.targetPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);
+                zGraphics.FillRectangle(red, zXConstant, Convert.ToSingle(mObj.targetPosition.z), SimulatedObject.objectSize, SimulatedObject.objectSize);
+                xyGraphics.DrawEllipse(purplePen, 
+                    Convert.ToSingle(mObj.targetPosition.x)-GPS_Module.maxRadius + (SimulatedObject.objectSize/2), 
+                    Convert.ToSingle(mObj.targetPosition.y)-GPS_Module.maxRadius + (SimulatedObject.objectSize / 2), GPS_Module.maxRadius + GPS_Module.maxRadius, 
+                    GPS_Module.maxRadius + GPS_Module.maxRadius);                
             }
         }
 
-        public void Run()
+        public void Run(CancellationTokenSource token)
         {
-            int delay = 10;
+            //int delay = 1;
 
             int steps = 0;
 
@@ -96,10 +107,13 @@ namespace COSCSimulator
 
             while (!allDone)
             {
+                int speedOffset = speedTrackbarValue * 10;
+
                 ++steps;
-                if (steps % SimulatorController.ticksPerSecond == 0)
+                if (steps % speedOffset == 0)
                 {
                     //Task.Delay(delay).Wait();
+                    Thread.Sleep(1);
                 }
 
                 // Have we already taken enough steps to end the simulation?
@@ -119,18 +133,24 @@ namespace COSCSimulator
 
                     showNewLocation(mObj);
                 }
-                simulationPictureBox.Invalidate();
+                xyPictureBox.Invalidate();
+                zPictureBox.Invalidate();
+
+                if (token.IsCancellationRequested)
+                {
+                    allDone = true;
+                }
             }            
         }
 
         private void showNewLocation(SimulatedObject mObj)
         {
-            gObjSimulationBoard.FillRectangle(yellow, Convert.ToInt32(mObj.prevActualPosition.x), Convert.ToInt32(mObj.prevActualPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);            
-            gObjSimulationBoard.FillRectangle(black, Convert.ToInt32(mObj.actualPosition.x), Convert.ToInt32(mObj.actualPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);
+            xyGraphics.FillRectangle(yellow, Convert.ToInt32(mObj.prevActualPosition.x), Convert.ToInt32(mObj.prevActualPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);            
+            xyGraphics.FillRectangle(black, Convert.ToInt32(mObj.actualPosition.x), Convert.ToInt32(mObj.actualPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);
             //gObjSimulationBoard.FillRectangle(yellow, Convert.ToInt32(mObj.prevActualXPosition) + (size / 2), Convert.ToInt32(mObj.prevActualYPosition) + (size / 2), 1, 1);
 
-            gObjZAxisBoard.FillRectangle(yellow, zXConstant, Convert.ToInt32(mObj.prevActualPosition.z), SimulatedObject.objectSize, SimulatedObject.objectSize);            
-            gObjZAxisBoard.FillRectangle(black, zXConstant, Convert.ToInt32(mObj.actualPosition.z), SimulatedObject.objectSize, SimulatedObject.objectSize);
+            zGraphics.FillRectangle(yellow, zXConstant, Convert.ToInt32(mObj.prevActualPosition.z), SimulatedObject.objectSize, SimulatedObject.objectSize);            
+            zGraphics.FillRectangle(black, zXConstant, Convert.ToInt32(mObj.actualPosition.z), SimulatedObject.objectSize, SimulatedObject.objectSize);
             //gObjZAxisBoard.FillRectangle(yellow, zXConstant + (size / 2), Convert.ToInt32(mObj.prevActualZPosition), 1, 1);
         }
     }

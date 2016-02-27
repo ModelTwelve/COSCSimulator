@@ -28,13 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.simulationBoard = new System.Windows.Forms.Panel();
+            this.xyAxisPanel = new System.Windows.Forms.Panel();
             this.simulationPictureBox = new System.Windows.Forms.PictureBox();
             this.infoLabel = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.zAxisBoard = new System.Windows.Forms.Panel();
+            this.zAxisPictureBox = new System.Windows.Forms.PictureBox();
             this.goButton = new System.Windows.Forms.Button();
             this.countDropDown = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -43,21 +42,25 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.simulationBoard.SuspendLayout();
+            this.speedTrackBar = new System.Windows.Forms.TrackBar();
+            this.label5 = new System.Windows.Forms.Label();
+            this.xyAxisPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.simulationPictureBox)).BeginInit();
+            this.zAxisBoard.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.zAxisPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.speedTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // simulationBoard
             // 
-            this.simulationBoard.AutoScroll = true;
-            this.simulationBoard.AutoScrollMinSize = new System.Drawing.Size(5400, 5400);
-            this.simulationBoard.Controls.Add(this.simulationPictureBox);
-            this.simulationBoard.Location = new System.Drawing.Point(12, 12);
-            this.simulationBoard.Name = "simulationBoard";
-            this.simulationBoard.Size = new System.Drawing.Size(879, 544);
-            this.simulationBoard.TabIndex = 1;
-            this.simulationBoard.Paint += new System.Windows.Forms.PaintEventHandler(this.simulationBoard_Paint);
+            this.xyAxisPanel.AutoScroll = true;
+            this.xyAxisPanel.AutoScrollMinSize = new System.Drawing.Size(5400, 5400);
+            this.xyAxisPanel.Controls.Add(this.simulationPictureBox);
+            this.xyAxisPanel.Location = new System.Drawing.Point(12, 12);
+            this.xyAxisPanel.Name = "simulationBoard";
+            this.xyAxisPanel.Size = new System.Drawing.Size(879, 544);
+            this.xyAxisPanel.TabIndex = 1;
             // 
             // simulationPictureBox
             // 
@@ -68,7 +71,7 @@
             this.simulationPictureBox.Size = new System.Drawing.Size(5280, 5280);
             this.simulationPictureBox.TabIndex = 0;
             this.simulationPictureBox.TabStop = false;
-            this.simulationPictureBox.Click += new System.EventHandler(this.simulationPictureBox_Click);
+            this.simulationPictureBox.Click += new System.EventHandler(this.xy_Click);
             // 
             // infoLabel
             // 
@@ -80,18 +83,23 @@
             this.infoLabel.Text = "Get Started";
             this.infoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // zAxisBoard
             // 
+            this.zAxisBoard.Controls.Add(this.zAxisPictureBox);
             this.zAxisBoard.Location = new System.Drawing.Point(908, 12);
             this.zAxisBoard.Name = "zAxisBoard";
             this.zAxisBoard.Size = new System.Drawing.Size(89, 544);
             this.zAxisBoard.TabIndex = 3;
-            this.zAxisBoard.Click += new System.EventHandler(this.zAxisBoard_Click);
-            this.zAxisBoard.Paint += new System.Windows.Forms.PaintEventHandler(this.zAxisBoard_Paint);
+            // 
+            // simulationZAxisPictureBox
+            // 
+            this.zAxisPictureBox.BackColor = System.Drawing.Color.SkyBlue;
+            this.zAxisPictureBox.Location = new System.Drawing.Point(4, 4);
+            this.zAxisPictureBox.Name = "simulationZAxisPictureBox";
+            this.zAxisPictureBox.Size = new System.Drawing.Size(82, 537);
+            this.zAxisPictureBox.TabIndex = 0;
+            this.zAxisPictureBox.TabStop = false;
+            this.zAxisPictureBox.Click += new System.EventHandler(this.z_Click);
             // 
             // goButton
             // 
@@ -176,11 +184,33 @@
             this.pictureBox1.TabIndex = 13;
             this.pictureBox1.TabStop = false;
             // 
+            // speedTrackBar
+            // 
+            this.speedTrackBar.LargeChange = 1;
+            this.speedTrackBar.Location = new System.Drawing.Point(912, 578);
+            this.speedTrackBar.Minimum = 1;
+            this.speedTrackBar.Name = "speedTrackBar";
+            this.speedTrackBar.Size = new System.Drawing.Size(266, 45);
+            this.speedTrackBar.TabIndex = 14;
+            this.speedTrackBar.Value = 1;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(1056, 562);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(105, 13);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Simulation Speed";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1190, 627);
+            this.ClientSize = new System.Drawing.Size(1190, 636);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.speedTrackBar);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -191,13 +221,16 @@
             this.Controls.Add(this.goButton);
             this.Controls.Add(this.zAxisBoard);
             this.Controls.Add(this.infoLabel);
-            this.Controls.Add(this.simulationBoard);
+            this.Controls.Add(this.xyAxisPanel);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "MainForm";
             this.Text = "MainForm";
-            this.simulationBoard.ResumeLayout(false);
+            this.xyAxisPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.simulationPictureBox)).EndInit();
+            this.zAxisBoard.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.zAxisPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.speedTrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -205,9 +238,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel simulationBoard;
+        private System.Windows.Forms.Panel xyAxisPanel;
         private System.Windows.Forms.Label infoLabel;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Panel zAxisBoard;
         private System.Windows.Forms.Button goButton;
         private System.Windows.Forms.ComboBox countDropDown;
@@ -218,6 +250,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox simulationPictureBox;
+        private System.Windows.Forms.PictureBox zAxisPictureBox;
+        private System.Windows.Forms.TrackBar speedTrackBar;
+        private System.Windows.Forms.Label label5;
     }
 }
 
