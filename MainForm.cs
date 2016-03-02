@@ -45,6 +45,10 @@ namespace COSCSimulator
             clearXY();
             clearZ();
 
+            countDropDown.SelectedIndex = 0;
+            IMU_Theta_cb.SelectedIndex = 0;
+            IMU_Phi_cb.SelectedIndex = 0;
+
             x1 = xyAxisPanel.Size.Width / 4;
             y1 = xyAxisPanel.Size.Height / 10;
             z1 = zAxisPictureBox.Size.Height / 3;
@@ -52,6 +56,9 @@ namespace COSCSimulator
             x2 = xyAxisPanel.Size.Width / 2;
             y2 = xyAxisPanel.Size.Height - xyAxisPanel.Size.Height/10;
             z2 = zAxisPictureBox.Size.Height / 2;
+
+            // Just to make it really about x and y to trouble shoot IMU
+            z1 = z2;
 
             zXConstant = zAxisPictureBox.Size.Width / 2;
             
@@ -171,9 +178,13 @@ namespace COSCSimulator
 
                 int numberOfObjects = Convert.ToInt32(countDropDown.Text);
 
+                double imu_Theta = Convert.ToDouble(IMU_Theta_cb.Text);
+                double imu_Phi = Convert.ToDouble(IMU_Phi_cb.Text);
+                double gpsLoss = Convert.ToDouble(gpsLoss_tb.Text);
+
                 speedTrackbarValue = speedTrackBar.Value;
                 SimulatorController controller = new SimulatorController(simulationPictureBox, zAxisPictureBox, ref speedTrackbarValue,
-                    numberOfObjects, simulationDuration, x1, y1, z1, x2, y2, z2, velocity);
+                    numberOfObjects, simulationDuration, x1, y1, z1, x2, y2, z2, velocity, imu_Theta, imu_Phi, gpsLoss);
 
                 tokenSource = new CancellationTokenSource();
 

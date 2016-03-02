@@ -31,7 +31,8 @@ namespace COSCSimulator
             int formationNumber, double simulationDuration,
             double startX, double startY, double startZ, 
             double goalX, double goalY, double goalZ, 
-            double velocity)
+            double velocity, double imu_Theta, double imu_Phi,
+            double gpsLoss)
         {
             // Make the duration (in seconds) into ticks
             this.simulationDuration = Math.Floor(simulationDuration * SimulatorController.ticksPerSecond);
@@ -46,11 +47,11 @@ namespace COSCSimulator
             //gObjSimulationBoard.SmoothingMode = SmoothingMode.AntiAlias;
             //gObjZAxisBoard.SmoothingMode = SmoothingMode.AntiAlias;
 
-            //gObjSimulationBoard.ScaleTransform(2, 2);
+            //xyGraphics.ScaleTransform(10, 10);
 
             zXConstant = zictureBox.Size.Width / 2;
 
-            buildFormation(formationNumber,startX, startY, startZ,goalX, goalY, goalZ,velocity);
+            buildFormation(formationNumber,startX, startY, startZ,goalX, goalY, goalZ,velocity, imu_Theta, imu_Phi, gpsLoss);
         }
 
         public List<double> getDistances()
@@ -66,21 +67,21 @@ namespace COSCSimulator
         private void buildFormation(int formationNumber,
             double startX, double startY, double startZ,
             double goalX, double goalY, double goalZ,
-            double velocity)
+            double velocity, double imu_Theta, double imu_Phi, double gpsLoss)
         {                      
             switch (formationNumber)
             {
                 case 1:
-                    movingObjects.Add(new SimulatedObject(startX, startY, startZ, goalX, goalY, goalZ, velocity));
+                    movingObjects.Add(new SimulatedObject(startX, startY, startZ, goalX, goalY, goalZ, velocity, imu_Theta, imu_Phi, gpsLoss));
                     break;
                 case 2:
-                    movingObjects.Add(new SimulatedObject(startX, startY, startZ, goalX, goalY, goalZ, velocity));
-                    movingObjects.Add(new SimulatedObject(startX - 40, startY, startZ, goalX - 40, goalY, goalZ, velocity));
+                    movingObjects.Add(new SimulatedObject(startX, startY, startZ, goalX, goalY, goalZ, velocity, imu_Theta, imu_Phi, gpsLoss));
+                    movingObjects.Add(new SimulatedObject(startX - 40, startY, startZ, goalX - 40, goalY, goalZ, velocity, imu_Theta, imu_Phi, 0));
                     break;
                 case 3:
-                    movingObjects.Add(new SimulatedObject(startX, startY, startZ, goalX, goalY, goalZ, velocity));
-                    movingObjects.Add(new SimulatedObject(startX - 40, startY, startZ, goalX - 40, goalY, goalZ, velocity));
-                    movingObjects.Add(new SimulatedObject(startX + 40, startY, startZ, goalX + 40, goalY, goalZ, velocity));
+                    movingObjects.Add(new SimulatedObject(startX, startY, startZ, goalX, goalY, goalZ, velocity, imu_Theta, imu_Phi, gpsLoss));
+                    movingObjects.Add(new SimulatedObject(startX - 40, startY, startZ, goalX - 40, goalY, goalZ, velocity, imu_Theta, imu_Phi, 0));
+                    movingObjects.Add(new SimulatedObject(startX + 40, startY, startZ, goalX + 40, goalY, goalZ, velocity, imu_Theta, imu_Phi, 0));
                     break;
             }
 

@@ -52,16 +52,16 @@ namespace COSCSimulator
 
         public double speed { get; private set; }       
 
-        private double tickSpeed;
+        private double tickSpeed;        
 
-        public SimulatedObject(double startX, double startY, double startZ, double goalX, double goalY, double goalZ, double velocity)
+        public SimulatedObject(double startX, double startY, double startZ, double goalX, double goalY, double goalZ, double velocity, double imu_Theta, double imu_Phi, double gpsLoss)
         {
-            positionLogic = new PositionProtocolLogic(random);
+            positionLogic = new PositionProtocolLogic(random, imu_Theta, imu_Phi, gpsLoss);
 
             actualPosition = new Position(startX, startY, startZ);
-            prevActualPosition = new Position();
+            prevActualPosition = new Position(startX, startY, startZ);
             expectedPosition = new Position(startX, startY, startZ);
-            prevExpectedPosition = new Position();
+            prevExpectedPosition = new Position(startX, startY, startZ);
             targetPosition = new Position(goalX, goalY, goalZ);            
 
             // I want to 
@@ -81,10 +81,15 @@ namespace COSCSimulator
             return actualPosition.distanceFrom(targetPosition);
         }
 
+        private double getAngle(double number)
+        {
+            return Math.PI * number / 180.0;
+        }
+
         public void stepTowards()
         {
-            positionLogic.incTicks();
-
+            positionLogic.incTicks(actualPosition);
+           
             prevActualPosition.Clone(actualPosition);
             prevExpectedPosition.Clone(expectedPosition);            
 
@@ -92,6 +97,16 @@ namespace COSCSimulator
             double expectedXDistance = targetPosition.x - expectedPosition.x;
             double expectedYDistance = targetPosition.y - expectedPosition.y;
             double expectedZDistance = targetPosition.z - expectedPosition.z;
+
+            // Get more precise angles from full expected distance
+            double theta = Math.Abs(
+                Math.Atan(expectedXDistance / expectedYDistance) * 180.0 / Math.PI
+                ); // polar
+            double phi = Math.Abs(
+                Math.Atan(
+                Math.Sqrt(expectedXDistance * expectedXDistance + expectedYDistance * expectedYDistance) / 
+                expectedZDistance) * 180.0 / Math.PI
+                ); // azimuthal  
 
             // We actually need to move this far
             double actualDistance = actualPosition.distanceFrom(targetPosition);
@@ -102,47 +117,15 @@ namespace COSCSimulator
             double expectedYTickDistance = (tickSpeed * expectedYDistance / expectedDistance);
             double expectedZTickDistance = (tickSpeed * expectedZDistance / expectedDistance);
 
-            if (actualDistance > tickSpeed)
-            {
-                // Move towards the goal using where we think we are
-                // and allowing that to affect the actual positioning
-                actualPosition.x += expectedXTickDistance;
-                actualPosition.y += expectedYTickDistance;
-                actualPosition.z += expectedZTickDistance;
+            double radius = Math.Sqrt(expectedXTickDistance * expectedXTickDistance + 
+                expectedYTickDistance * expectedYTickDistance + 
+                expectedZTickDistance * expectedZTickDistance);
 
-                if (positionLogic.shouldMeasure())
-                {
-                    positionLogic.getExpectedPosition(expectedPosition, actualPosition);
-                }
-                else
-                {
-                    // Else continue on your wrong path
-                    expectedPosition.x += expectedXTickDistance;
-                    expectedPosition.y += expectedYTickDistance;
-                    expectedPosition.z += expectedZTickDistance;
-                }
-            }
-            else
-            {
-                // Last step
-                if (actualDistance > tickSpeed)
-                {
-                    actualPosition.x += expectedXTickDistance;
-                    actualPosition.y += expectedYTickDistance;
-                    actualPosition.z += expectedZTickDistance;
-
-                    expectedPosition.Clone(actualPosition);
-                }
-                else
-                {
-                    actualPosition.Clone(targetPosition);
-                }
-            }
-        }
-
-        //public static int[] pickRandomXYZWithinSphere(int radius)
-        //{
-
-        //}
+            positionLogic.updatePosition(actualDistance, tickSpeed,
+            targetPosition, actualPosition, expectedPosition,
+            expectedXTickDistance, expectedYTickDistance, expectedZTickDistance,
+            theta, phi, radius);
+            
+        }        
     }
 }

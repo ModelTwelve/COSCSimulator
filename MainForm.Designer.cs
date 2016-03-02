@@ -44,6 +44,12 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.speedTrackBar = new System.Windows.Forms.TrackBar();
             this.label5 = new System.Windows.Forms.Label();
+            this.IMU_Theta_cb = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.IMU_Phi_cb = new System.Windows.Forms.ComboBox();
+            this.gpsLoss_tb = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.xyAxisPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.simulationPictureBox)).BeginInit();
             this.zAxisBoard.SuspendLayout();
@@ -52,13 +58,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.speedTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
-            // simulationBoard
+            // xyAxisPanel
             // 
             this.xyAxisPanel.AutoScroll = true;
             this.xyAxisPanel.AutoScrollMinSize = new System.Drawing.Size(5400, 5400);
             this.xyAxisPanel.Controls.Add(this.simulationPictureBox);
             this.xyAxisPanel.Location = new System.Drawing.Point(12, 12);
-            this.xyAxisPanel.Name = "simulationBoard";
+            this.xyAxisPanel.Name = "xyAxisPanel";
             this.xyAxisPanel.Size = new System.Drawing.Size(879, 544);
             this.xyAxisPanel.TabIndex = 1;
             // 
@@ -91,11 +97,11 @@
             this.zAxisBoard.Size = new System.Drawing.Size(89, 544);
             this.zAxisBoard.TabIndex = 3;
             // 
-            // simulationZAxisPictureBox
+            // zAxisPictureBox
             // 
             this.zAxisPictureBox.BackColor = System.Drawing.Color.SkyBlue;
             this.zAxisPictureBox.Location = new System.Drawing.Point(4, 4);
-            this.zAxisPictureBox.Name = "simulationZAxisPictureBox";
+            this.zAxisPictureBox.Name = "zAxisPictureBox";
             this.zAxisPictureBox.Size = new System.Drawing.Size(82, 537);
             this.zAxisPictureBox.TabIndex = 0;
             this.zAxisPictureBox.TabStop = false;
@@ -105,7 +111,7 @@
             // 
             this.goButton.Location = new System.Drawing.Point(1040, 332);
             this.goButton.Name = "goButton";
-            this.goButton.Size = new System.Drawing.Size(92, 23);
+            this.goButton.Size = new System.Drawing.Size(94, 23);
             this.goButton.TabIndex = 6;
             this.goButton.Text = "GO!";
             this.goButton.UseVisualStyleBackColor = true;
@@ -114,6 +120,7 @@
             // countDropDown
             // 
             this.countDropDown.DisplayMember = "1";
+            this.countDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.countDropDown.FormattingEnabled = true;
             this.countDropDown.Items.AddRange(new object[] {
             "1",
@@ -122,9 +129,8 @@
             this.countDropDown.Location = new System.Drawing.Point(1040, 302);
             this.countDropDown.Name = "countDropDown";
             this.countDropDown.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.countDropDown.Size = new System.Drawing.Size(92, 21);
+            this.countDropDown.Size = new System.Drawing.Size(94, 21);
             this.countDropDown.TabIndex = 7;
-            this.countDropDown.Text = "1";
             // 
             // label1
             // 
@@ -187,7 +193,7 @@
             // speedTrackBar
             // 
             this.speedTrackBar.LargeChange = 1;
-            this.speedTrackBar.Location = new System.Drawing.Point(912, 578);
+            this.speedTrackBar.Location = new System.Drawing.Point(642, 575);
             this.speedTrackBar.Minimum = 1;
             this.speedTrackBar.Name = "speedTrackBar";
             this.speedTrackBar.Size = new System.Drawing.Size(266, 45);
@@ -198,17 +204,92 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(1056, 562);
+            this.label5.Location = new System.Drawing.Point(786, 559);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(105, 13);
             this.label5.TabIndex = 15;
             this.label5.Text = "Simulation Speed";
+            // 
+            // IMU_Theta_cb
+            // 
+            this.IMU_Theta_cb.DisplayMember = "1";
+            this.IMU_Theta_cb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.IMU_Theta_cb.FormattingEnabled = true;
+            this.IMU_Theta_cb.Items.AddRange(new object[] {
+            "4.2",
+            "180",
+            "300"});
+            this.IMU_Theta_cb.Location = new System.Drawing.Point(1003, 562);
+            this.IMU_Theta_cb.Name = "IMU_Theta_cb";
+            this.IMU_Theta_cb.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.IMU_Theta_cb.Size = new System.Drawing.Size(48, 21);
+            this.IMU_Theta_cb.TabIndex = 16;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(931, 570);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(66, 13);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "Gyro ARW";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(931, 596);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(69, 13);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "Acce ARW";
+            // 
+            // IMU_Phi_cb
+            // 
+            this.IMU_Phi_cb.DisplayMember = "1";
+            this.IMU_Phi_cb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.IMU_Phi_cb.FormattingEnabled = true;
+            this.IMU_Phi_cb.Items.AddRange(new object[] {
+            "4.2",
+            "180",
+            "300"});
+            this.IMU_Phi_cb.Location = new System.Drawing.Point(1003, 588);
+            this.IMU_Phi_cb.Name = "IMU_Phi_cb";
+            this.IMU_Phi_cb.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.IMU_Phi_cb.Size = new System.Drawing.Size(48, 21);
+            this.IMU_Phi_cb.TabIndex = 18;
+            // 
+            // gpsLoss_tb
+            // 
+            this.gpsLoss_tb.Location = new System.Drawing.Point(1100, 588);
+            this.gpsLoss_tb.Name = "gpsLoss_tb";
+            this.gpsLoss_tb.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.gpsLoss_tb.Size = new System.Drawing.Size(73, 20);
+            this.gpsLoss_tb.TabIndex = 20;
+            this.gpsLoss_tb.Text = "5";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(1065, 570);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(108, 13);
+            this.label8.TabIndex = 21;
+            this.label8.Text = "GPS Loss (in sec)";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1190, 636);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.gpsLoss_tb);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.IMU_Phi_cb);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.IMU_Theta_cb);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.speedTrackBar);
             this.Controls.Add(this.pictureBox1);
@@ -253,6 +334,12 @@
         private System.Windows.Forms.PictureBox zAxisPictureBox;
         private System.Windows.Forms.TrackBar speedTrackBar;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox IMU_Theta_cb;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox IMU_Phi_cb;
+        private System.Windows.Forms.TextBox gpsLoss_tb;
+        private System.Windows.Forms.Label label8;
     }
 }
 
