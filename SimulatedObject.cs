@@ -36,7 +36,12 @@ namespace COSCSimulator
             speed = velocity;
             tickSpeed = speed / SimulatorController.ticksPerSecond;
         }
-        
+
+        public void assignNodes(List<SimulatedObject> nodes)
+        {
+            positionLogic.assignNodes(nodes);
+        }
+
         public bool areWeThereYet()
         {
             return actualPosition.x == targetPosition.x && 

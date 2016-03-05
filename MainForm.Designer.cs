@@ -63,7 +63,6 @@
             // xyAxisPanel
             // 
             this.xyAxisPanel.AutoScroll = true;
-            this.xyAxisPanel.AutoScrollMinSize = new System.Drawing.Size(5400, 5400);
             this.xyAxisPanel.Controls.Add(this.simulationPictureBox);
             this.xyAxisPanel.Location = new System.Drawing.Point(12, 12);
             this.xyAxisPanel.Name = "xyAxisPanel";
@@ -131,7 +130,8 @@
             this.totalSimulatedObjects_dd.Items.AddRange(new object[] {
             "1",
             "2",
-            "3"});
+            "3",
+            "5"});
             this.totalSimulatedObjects_dd.Location = new System.Drawing.Point(1040, 320);
             this.totalSimulatedObjects_dd.Name = "totalSimulatedObjects_dd";
             this.totalSimulatedObjects_dd.RightToLeft = System.Windows.Forms.RightToLeft.Yes;

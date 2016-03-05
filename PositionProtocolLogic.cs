@@ -10,10 +10,11 @@ namespace COSCSimulator
     {
         private GPS_Module gps;
         private IMU_Module imu;
+        private RSSI_Module rssi;
 
         private int ticks = 0;
 
-        private bool activePerfectPosition, activeGPS, activeIMU;
+        private bool activePerfectPosition, activeGPS, activeIMU, activeRSSI;
         private double gpsLossInTicks = 0;
 
         public PositionProtocolLogic(double imuGyroAccuracy, double imuAccelAccuracy, double gpsLoss)
@@ -21,9 +22,16 @@ namespace COSCSimulator
             activePerfectPosition = false;
             activeGPS = true;
             activeIMU = false;
-            this.gpsLossInTicks = gpsLoss*1000;
+            activeRSSI = false;
+            this.gpsLossInTicks = gpsLoss* SimulatorController.ticksPerSecond;
             gps = new GPS_Module();
             imu = new IMU_Module(imuGyroAccuracy, imuAccelAccuracy);
+            rssi = new RSSI_Module();
+        }
+
+        public void assignNodes(List<SimulatedObject> nodes)
+        {
+            rssi.assignNodes(nodes);
         }
 
         private void getExpectedPosition(Position actualPosition, Position expectedPosition,
@@ -45,6 +53,18 @@ namespace COSCSimulator
                 actualPosition.z += expectedZTickDistance;
 
                 gps.Calculate(expectedPosition, actualPosition);
+            }            
+            else if ( (activeRSSI) && (rssi.shouldMeasure(ticks)) ) 
+            {
+                actualPosition.x += expectedXTickDistance;
+                actualPosition.y += expectedYTickDistance;
+                actualPosition.z += expectedZTickDistance;
+
+                Position calcPosition = rssi.trilaterate(actualPosition);
+                expectedPosition.Clone(calcPosition);
+                
+                // Reset the IMU for new theta
+                imu.reset();
             }
             else if (activeIMU)
             {
@@ -61,17 +81,26 @@ namespace COSCSimulator
 
         private bool shouldMeasure()
         {
-            return activePerfectPosition || activeIMU ||
-                ((activeGPS) && (gps.shouldMeasure(ticks)));
+            return activePerfectPosition || activeIMU || 
+                ((activeGPS) && (gps.shouldMeasure(ticks))) ||
+                ((activeRSSI) && (rssi.shouldMeasure(ticks)))
+                ;
         }
 
         public void incTicks(Position actualPosition)
         {
             ++ticks;
-            if ( (gpsLossInTicks>0) && (ticks > gpsLossInTicks) &&(!activeIMU))
+            //if ( (gpsLossInTicks>0) && (ticks > gpsLossInTicks) &&(!activeIMU))
+            //{
+            //    activeGPS = false;
+            //    activePerfectPosition = false;
+            //    activeIMU = true;
+            //}
+            if ((gpsLossInTicks > 0) && (ticks > gpsLossInTicks) && (!activeRSSI))
             {
                 activeGPS = false;
                 activePerfectPosition = false;
+                activeRSSI = true;
                 activeIMU = true;
             }
         }

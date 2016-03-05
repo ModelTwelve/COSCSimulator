@@ -26,7 +26,7 @@ namespace COSCSimulator
         private Brush red = new SolidBrush(Color.Red);
         private Brush yellow = new SolidBrush(Color.Yellow);
 
-        public SimulatorController(PictureBox xyPictureBox, PictureBox zictureBox,
+        public SimulatorController(Panel xyPanel, PictureBox xyPictureBox, PictureBox zictureBox,
             ref int speedTrackbarValue,
             int formationNumber, double simulationDuration,
             Position origin, Position destination,
@@ -37,16 +37,12 @@ namespace COSCSimulator
             this.simulationDuration = Math.Floor(simulationDuration * SimulatorController.ticksPerSecond);
 
             this.xyPictureBox = xyPictureBox;
-            this.zPictureBox = zictureBox;
+            this.zPictureBox = zictureBox;            
+
             xyGraphics = Graphics.FromImage(this.xyPictureBox.Image);
             zGraphics = Graphics.FromImage(this.zPictureBox.Image);
 
-            this.speedTrackbarValue = speedTrackbarValue;
-
-            //gObjSimulationBoard.SmoothingMode = SmoothingMode.AntiAlias;
-            //gObjZAxisBoard.SmoothingMode = SmoothingMode.AntiAlias;
-
-            //xyGraphics.ScaleTransform(10, 10);
+            this.speedTrackbarValue = speedTrackbarValue;            
 
             zXConstant = zictureBox.Size.Width / 2;
 
@@ -83,6 +79,25 @@ namespace COSCSimulator
                     movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
                     origin.x += 80; destination.x += 80;
                     movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+                    break;
+
+                case 5:
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss));
+
+                    origin.x -= 40; destination.x -= 40;
+                    origin.y -= 40; destination.y -= 40;
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+
+                    origin.y += 80; destination.y += 80;
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+                    
+                    origin.x += 80; destination.x += 80;
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+
+                    origin.y -= 80; destination.y -= 80;
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+
+                    movingObjects[0].assignNodes(new List<SimulatedObject> { movingObjects[1] , movingObjects[2] , movingObjects[3] });
                     break;
             }
 
@@ -135,6 +150,7 @@ namespace COSCSimulator
 
                     showNewLocation(mObj);
                 }
+
                 xyPictureBox.Invalidate();
                 zPictureBox.Invalidate();
 

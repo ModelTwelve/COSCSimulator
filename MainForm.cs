@@ -29,7 +29,7 @@ namespace COSCSimulator
 
         public const string directions = "Left Click Sets Current Position and Right Click Sets Target Position";
 
-        private BetterTimer mainTimer = new BetterTimer();
+        private BetterTimer mainTimer = new BetterTimer();        
 
         public MainForm()
         {
@@ -53,8 +53,8 @@ namespace COSCSimulator
             y1 = xyAxisPanel.Size.Height / 10;
             z1 = zAxisPictureBox.Size.Height / 3;
 
-            x2 = xyAxisPanel.Size.Width / 2;
-            y2 = xyAxisPanel.Size.Height - xyAxisPanel.Size.Height/10;
+            x2 = xyAxisPanel.Size.Width-100;
+            y2 = simulationPictureBox.Image.Height-100;
             z2 = zAxisPictureBox.Size.Height / 2;
 
             // Just to make it really about x and y to trouble shoot IMU
@@ -88,7 +88,7 @@ namespace COSCSimulator
             clearXY();
             Graphics gObj = Graphics.FromImage(simulationPictureBox.Image);
 
-            //gObj.ScaleTransform(2, 2);
+            //gObj.ScaleTransform(zoomFactor, zoomFactor);
             
             gObj.FillEllipse(black, new Rectangle(x1, y1, 20, 20));
             gObj.FillEllipse(red, new Rectangle(x2, y2, 20, 20));
@@ -212,10 +212,10 @@ namespace COSCSimulator
                 double gpsLoss = Convert.ToDouble(gpsLoss_tb.Text);
 
                 Position origin = new Position(x1, y1, z1);
-                Position destination = new Position(x2, y2, z2);
+                Position destination = new Position(x2, y2, z2);                
 
                 speedTrackbarValue = speedTrackBar.Value;
-                SimulatorController controller = new SimulatorController(simulationPictureBox, zAxisPictureBox, ref speedTrackbarValue,
+                SimulatorController controller = new SimulatorController(xyAxisPanel, simulationPictureBox, zAxisPictureBox, ref speedTrackbarValue,
                     numberOfObjects, simulationDuration, origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss);
 
                 tokenSource = new CancellationTokenSource();
@@ -242,7 +242,5 @@ namespace COSCSimulator
             goButton.Text = "GO!";
             simulationRunning = false;
         }
-
-
     }
 }
