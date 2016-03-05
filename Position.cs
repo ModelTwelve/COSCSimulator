@@ -58,6 +58,10 @@ namespace COSCSimulator
             return Math.Sqrt(square(a)+square(b)+square(c));
         }
 
+        // Credits to: https://github.com/gheja
+        // based on: https://github.com/gheja/trilateration.js/blob/master/trilateration.js
+        // which was based on: https://en.wikipedia.org/wiki/Trilateration
+
         private static double dot(Position p1, Position p2)
         {
             return p1.x * p2.x + p1.y * p2.y + p1.z * p2.z;
