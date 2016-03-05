@@ -6,63 +6,31 @@ using System.Threading.Tasks;
 
 namespace COSCSimulator
 {
-    public class Position
-    {
-        public double x=0, y=0, z=0;
-        public Position()
-        {
-        }
-
-        public Position(double x, double y, double z)
-        {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-        public double distanceFrom(Position target)
-        {
-            double xDistance = target.x - this.x;
-            double yDistance = target.y - this.y;
-            double zDistance = target.z - this.z;
-            double totalLength = Math.Sqrt(xDistance * xDistance + yDistance * yDistance + zDistance * zDistance);
-            return totalLength;
-        }
-
-        public void Clone(Position p)
-        {
-            this.x = p.x;
-            this.y = p.y;
-            this.z = p.z;
-        }
-    }
-
     public class SimulatedObject
     {        
         public const int objectSize = 4;
 
         private PositionProtocolLogic positionLogic;
-        private Random random;
 
-        public Position actualPosition;
-        public Position prevActualPosition;
-        public Position expectedPosition;
-        public Position prevExpectedPosition;
-        public Position targetPosition;    
+        public Position actualPosition = new Position();
+        public Position prevActualPosition = new Position();
+        public Position expectedPosition = new Position();
+        public Position prevExpectedPosition = new Position();
+        public Position targetPosition = new Position();
 
         public double speed { get; private set; }       
 
         private double tickSpeed;        
 
-        public SimulatedObject(double startX, double startY, double startZ, double goalX, double goalY, double goalZ, double velocity, double imu_Theta, double imu_Phi, double gpsLoss)
+        public SimulatedObject(Position origin, Position destination, double velocity, double imuGyroAccuracy, double imuAccelAccuracy, double gpsLoss)
         {
-            positionLogic = new PositionProtocolLogic(random, imu_Theta, imu_Phi, gpsLoss);
+            positionLogic = new PositionProtocolLogic(imuGyroAccuracy, imuAccelAccuracy, gpsLoss);
 
-            actualPosition = new Position(startX, startY, startZ);
-            prevActualPosition = new Position(startX, startY, startZ);
-            expectedPosition = new Position(startX, startY, startZ);
-            prevExpectedPosition = new Position(startX, startY, startZ);
-            targetPosition = new Position(goalX, goalY, goalZ);            
+            actualPosition.Clone(origin);
+            prevActualPosition.Clone(origin);
+            expectedPosition.Clone(origin);
+            prevExpectedPosition.Clone(origin);
+            targetPosition.Clone(destination);                 
 
             // I want to 
             speed = velocity;
@@ -104,7 +72,7 @@ namespace COSCSimulator
                 ); // polar
             double phi = Math.Abs(
                 Math.Atan(
-                Math.Sqrt(expectedXDistance * expectedXDistance + expectedYDistance * expectedYDistance) / 
+                Math.Sqrt(Position.square(expectedXDistance) + Position.square(expectedYDistance)) / 
                 expectedZDistance) * 180.0 / Math.PI
                 ); // azimuthal  
 
@@ -117,9 +85,7 @@ namespace COSCSimulator
             double expectedYTickDistance = (tickSpeed * expectedYDistance / expectedDistance);
             double expectedZTickDistance = (tickSpeed * expectedZDistance / expectedDistance);
 
-            double radius = Math.Sqrt(expectedXTickDistance * expectedXTickDistance + 
-                expectedYTickDistance * expectedYTickDistance + 
-                expectedZTickDistance * expectedZTickDistance);
+            double radius = Position.calculateRadius(expectedXTickDistance, expectedYTickDistance, expectedZTickDistance);
 
             positionLogic.updatePosition(actualDistance, tickSpeed,
             targetPosition, actualPosition, expectedPosition,

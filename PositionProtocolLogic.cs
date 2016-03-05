@@ -16,14 +16,14 @@ namespace COSCSimulator
         private bool activePerfectPosition, activeGPS, activeIMU;
         private double gpsLossInTicks = 0;
 
-        public PositionProtocolLogic(Random random, double imu_Theta, double imu_Phi, double gpsLoss)
+        public PositionProtocolLogic(double imuGyroAccuracy, double imuAccelAccuracy, double gpsLoss)
         {
             activePerfectPosition = false;
             activeGPS = true;
             activeIMU = false;
             this.gpsLossInTicks = gpsLoss*1000;
             gps = new GPS_Module();
-            imu = new IMU_Module(imu_Theta, imu_Phi);
+            imu = new IMU_Module(imuGyroAccuracy, imuAccelAccuracy);
         }
 
         private void getExpectedPosition(Position actualPosition, Position expectedPosition,
@@ -68,7 +68,7 @@ namespace COSCSimulator
         public void incTicks(Position actualPosition)
         {
             ++ticks;
-            if ( (ticks > gpsLossInTicks) &&(!activeIMU))
+            if ( (gpsLossInTicks>0) && (ticks > gpsLossInTicks) &&(!activeIMU))
             {
                 activeGPS = false;
                 activePerfectPosition = false;

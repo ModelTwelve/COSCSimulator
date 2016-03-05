@@ -29,9 +29,8 @@ namespace COSCSimulator
         public SimulatorController(PictureBox xyPictureBox, PictureBox zictureBox,
             ref int speedTrackbarValue,
             int formationNumber, double simulationDuration,
-            double startX, double startY, double startZ, 
-            double goalX, double goalY, double goalZ, 
-            double velocity, double imu_Theta, double imu_Phi,
+            Position origin, Position destination,
+            double velocity, double imuGyroAccuracy, double imuAccelAccuracy,
             double gpsLoss)
         {
             // Make the duration (in seconds) into ticks
@@ -51,7 +50,7 @@ namespace COSCSimulator
 
             zXConstant = zictureBox.Size.Width / 2;
 
-            buildFormation(formationNumber,startX, startY, startZ,goalX, goalY, goalZ,velocity, imu_Theta, imu_Phi, gpsLoss);
+            buildFormation(formationNumber, origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss);
         }
 
         public List<double> getDistances()
@@ -65,23 +64,25 @@ namespace COSCSimulator
         }
 
         private void buildFormation(int formationNumber,
-            double startX, double startY, double startZ,
-            double goalX, double goalY, double goalZ,
-            double velocity, double imu_Theta, double imu_Phi, double gpsLoss)
+            Position origin, Position destination,
+            double velocity, double imuGyroAccuracy, double imuAccelAccuracy, double gpsLoss)
         {                      
             switch (formationNumber)
             {
                 case 1:
-                    movingObjects.Add(new SimulatedObject(startX, startY, startZ, goalX, goalY, goalZ, velocity, imu_Theta, imu_Phi, gpsLoss));
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss));
                     break;
                 case 2:
-                    movingObjects.Add(new SimulatedObject(startX, startY, startZ, goalX, goalY, goalZ, velocity, imu_Theta, imu_Phi, gpsLoss));
-                    movingObjects.Add(new SimulatedObject(startX - 40, startY, startZ, goalX - 40, goalY, goalZ, velocity, imu_Theta, imu_Phi, 0));
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss));
+                    origin.x -= 40; destination.x -= 40;
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
                     break;
                 case 3:
-                    movingObjects.Add(new SimulatedObject(startX, startY, startZ, goalX, goalY, goalZ, velocity, imu_Theta, imu_Phi, gpsLoss));
-                    movingObjects.Add(new SimulatedObject(startX - 40, startY, startZ, goalX - 40, goalY, goalZ, velocity, imu_Theta, imu_Phi, 0));
-                    movingObjects.Add(new SimulatedObject(startX + 40, startY, startZ, goalX + 40, goalY, goalZ, velocity, imu_Theta, imu_Phi, 0));
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss));
+                    origin.x -= 40; destination.x -= 40;
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+                    origin.x += 80; destination.x += 80;
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
                     break;
             }
 

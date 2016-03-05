@@ -45,9 +45,9 @@ namespace COSCSimulator
             clearXY();
             clearZ();
 
-            countDropDown.SelectedIndex = 0;
-            IMU_Theta_cb.SelectedIndex = 0;
-            IMU_Phi_cb.SelectedIndex = 0;
+            totalSimulatedObjects_dd.SelectedIndex = 0;
+            IMU_GyroAccuracy_dd.SelectedIndex = 2;
+            IMU_AccelAccuracy_dd.SelectedIndex = 0;
 
             x1 = xyAxisPanel.Size.Width / 4;
             y1 = xyAxisPanel.Size.Height / 10;
@@ -74,6 +74,8 @@ namespace COSCSimulator
 
             paintXY();
             paintZ();
+
+            this.CenterToScreen();
         }                
         
         private void clearXY()
@@ -85,6 +87,8 @@ namespace COSCSimulator
         {
             clearXY();
             Graphics gObj = Graphics.FromImage(simulationPictureBox.Image);
+
+            //gObj.ScaleTransform(2, 2);
             
             gObj.FillEllipse(black, new Rectangle(x1, y1, 20, 20));
             gObj.FillEllipse(red, new Rectangle(x2, y2, 20, 20));
@@ -109,6 +113,31 @@ namespace COSCSimulator
                 }
 
                 paintXY();
+            }
+        }
+
+        private void xyAxisPanel_Paint(object sender, PaintEventArgs e)
+        {
+            //e.Graphics.ScaleTransform(2, 2);
+            //simulationPictureBox.Refresh();
+        }
+
+        private void speedTrackBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                var size = speedTrackBar.Size.Width;
+                var total = speedTrackBar.Maximum - speedTrackBar.Minimum + 1;
+                size -= (size / (total + 2));
+
+                Point point = speedTrackBar.PointToClient(Cursor.Position);
+                var clickSpot = (Convert.ToDouble(point.X) / size);
+                var newValue = Convert.ToInt32(clickSpot * total);
+                speedTrackBar.Value = newValue;
+            }
+            catch
+            {
+
             }
         }
 
@@ -176,15 +205,18 @@ namespace COSCSimulator
                 
                 goButton.Text = "STOP!";
 
-                int numberOfObjects = Convert.ToInt32(countDropDown.Text);
+                int numberOfObjects = Convert.ToInt32(totalSimulatedObjects_dd.Text);
 
-                double imu_Theta = Convert.ToDouble(IMU_Theta_cb.Text);
-                double imu_Phi = Convert.ToDouble(IMU_Phi_cb.Text);
+                double imuGyroAccuracy = Convert.ToDouble(IMU_GyroAccuracy_dd.Text);
+                double imuAccelAccuracy = Convert.ToDouble(IMU_AccelAccuracy_dd.Text);
                 double gpsLoss = Convert.ToDouble(gpsLoss_tb.Text);
+
+                Position origin = new Position(x1, y1, z1);
+                Position destination = new Position(x2, y2, z2);
 
                 speedTrackbarValue = speedTrackBar.Value;
                 SimulatorController controller = new SimulatorController(simulationPictureBox, zAxisPictureBox, ref speedTrackbarValue,
-                    numberOfObjects, simulationDuration, x1, y1, z1, x2, y2, z2, velocity, imu_Theta, imu_Phi, gpsLoss);
+                    numberOfObjects, simulationDuration, origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss);
 
                 tokenSource = new CancellationTokenSource();
 
