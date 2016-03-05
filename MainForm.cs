@@ -45,7 +45,7 @@ namespace COSCSimulator
             clearXY();
             clearZ();
 
-            totalSimulatedObjects_dd.SelectedIndex = 0;
+            totalSimulatedObjects_dd.SelectedIndex = 3;
             IMU_GyroAccuracy_dd.SelectedIndex = 2;
             IMU_AccelAccuracy_dd.SelectedIndex = 0;
 

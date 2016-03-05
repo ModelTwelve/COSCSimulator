@@ -275,7 +275,7 @@
             this.gpsLoss_tb.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.gpsLoss_tb.Size = new System.Drawing.Size(73, 20);
             this.gpsLoss_tb.TabIndex = 20;
-            this.gpsLoss_tb.Text = "999";
+            this.gpsLoss_tb.Text = "10";
             // 
             // label8
             // 
