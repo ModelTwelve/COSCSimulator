@@ -51,6 +51,8 @@
             this.gpsLoss_tb = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.rightPanel = new System.Windows.Forms.Panel();
+            this.bottomPanel = new System.Windows.Forms.Panel();
             this.xyAxisPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.simulationPictureBox)).BeginInit();
             this.zAxisBoard.SuspendLayout();
@@ -58,6 +60,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speedTrackBar)).BeginInit();
             this.panel1.SuspendLayout();
+            this.rightPanel.SuspendLayout();
+            this.bottomPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // xyAxisPanel
@@ -84,7 +88,7 @@
             // infoLabel
             // 
             this.infoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.infoLabel.Location = new System.Drawing.Point(12, 578);
+            this.infoLabel.Location = new System.Drawing.Point(12, 12);
             this.infoLabel.Name = "infoLabel";
             this.infoLabel.Size = new System.Drawing.Size(555, 31);
             this.infoLabel.TabIndex = 2;
@@ -94,7 +98,7 @@
             // zAxisBoard
             // 
             this.zAxisBoard.Controls.Add(this.zAxisPictureBox);
-            this.zAxisBoard.Location = new System.Drawing.Point(908, 12);
+            this.zAxisBoard.Location = new System.Drawing.Point(3, 3);
             this.zAxisBoard.Name = "zAxisBoard";
             this.zAxisBoard.Size = new System.Drawing.Size(89, 544);
             this.zAxisBoard.TabIndex = 3;
@@ -104,7 +108,7 @@
             this.zAxisPictureBox.BackColor = System.Drawing.Color.SkyBlue;
             this.zAxisPictureBox.Location = new System.Drawing.Point(4, 4);
             this.zAxisPictureBox.Name = "zAxisPictureBox";
-            this.zAxisPictureBox.Size = new System.Drawing.Size(82, 537);
+            this.zAxisPictureBox.Size = new System.Drawing.Size(82, 526);
             this.zAxisPictureBox.TabIndex = 0;
             this.zAxisPictureBox.TabStop = false;
             this.zAxisPictureBox.Click += new System.EventHandler(this.z_Click);
@@ -114,7 +118,7 @@
             this.goButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.goButton.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.goButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.goButton.Location = new System.Drawing.Point(1183, 502);
+            this.goButton.Location = new System.Drawing.Point(276, 489);
             this.goButton.Name = "goButton";
             this.goButton.Size = new System.Drawing.Size(145, 51);
             this.goButton.TabIndex = 6;
@@ -133,7 +137,7 @@
             "3",
             "5",
             "6"});
-            this.totalSimulatedObjects_dd.Location = new System.Drawing.Point(1040, 320);
+            this.totalSimulatedObjects_dd.Location = new System.Drawing.Point(133, 307);
             this.totalSimulatedObjects_dd.Name = "totalSimulatedObjects_dd";
             this.totalSimulatedObjects_dd.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.totalSimulatedObjects_dd.Size = new System.Drawing.Size(94, 21);
@@ -143,7 +147,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(1025, 304);
+            this.label1.Location = new System.Drawing.Point(118, 291);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(109, 13);
             this.label1.TabIndex = 8;
@@ -152,7 +156,7 @@
             // resultsListBox
             // 
             this.resultsListBox.FormattingEnabled = true;
-            this.resultsListBox.Location = new System.Drawing.Point(1019, 396);
+            this.resultsListBox.Location = new System.Drawing.Point(112, 383);
             this.resultsListBox.Name = "resultsListBox";
             this.resultsListBox.Size = new System.Drawing.Size(154, 160);
             this.resultsListBox.TabIndex = 9;
@@ -161,7 +165,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(1016, 373);
+            this.label2.Location = new System.Drawing.Point(109, 360);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(118, 20);
             this.label2.TabIndex = 10;
@@ -200,7 +204,7 @@
             // speedTrackBar
             // 
             this.speedTrackBar.LargeChange = 1;
-            this.speedTrackBar.Location = new System.Drawing.Point(1182, 451);
+            this.speedTrackBar.Location = new System.Drawing.Point(275, 438);
             this.speedTrackBar.Minimum = 1;
             this.speedTrackBar.Name = "speedTrackBar";
             this.speedTrackBar.Size = new System.Drawing.Size(146, 45);
@@ -213,7 +217,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(1223, 435);
+            this.label5.Location = new System.Drawing.Point(316, 422);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(105, 13);
             this.label5.TabIndex = 15;
@@ -228,7 +232,7 @@
             "4.2",
             "180",
             "300"});
-            this.IMU_GyroAccuracy_dd.Location = new System.Drawing.Point(1280, 296);
+            this.IMU_GyroAccuracy_dd.Location = new System.Drawing.Point(373, 283);
             this.IMU_GyroAccuracy_dd.Name = "IMU_GyroAccuracy_dd";
             this.IMU_GyroAccuracy_dd.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.IMU_GyroAccuracy_dd.Size = new System.Drawing.Size(48, 21);
@@ -238,7 +242,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(1208, 304);
+            this.label6.Location = new System.Drawing.Point(301, 291);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(66, 13);
             this.label6.TabIndex = 17;
@@ -248,7 +252,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(1208, 330);
+            this.label7.Location = new System.Drawing.Point(301, 317);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(69, 13);
             this.label7.TabIndex = 19;
@@ -263,7 +267,7 @@
             "4.2",
             "180",
             "300"});
-            this.IMU_AccelAccuracy_dd.Location = new System.Drawing.Point(1280, 322);
+            this.IMU_AccelAccuracy_dd.Location = new System.Drawing.Point(373, 309);
             this.IMU_AccelAccuracy_dd.Name = "IMU_AccelAccuracy_dd";
             this.IMU_AccelAccuracy_dd.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.IMU_AccelAccuracy_dd.Size = new System.Drawing.Size(48, 21);
@@ -271,7 +275,7 @@
             // 
             // gpsLoss_tb
             // 
-            this.gpsLoss_tb.Location = new System.Drawing.Point(1255, 391);
+            this.gpsLoss_tb.Location = new System.Drawing.Point(348, 378);
             this.gpsLoss_tb.Name = "gpsLoss_tb";
             this.gpsLoss_tb.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.gpsLoss_tb.Size = new System.Drawing.Size(73, 20);
@@ -282,7 +286,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(1220, 373);
+            this.label8.Location = new System.Drawing.Point(313, 360);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(108, 13);
             this.label8.TabIndex = 21;
@@ -294,36 +298,56 @@
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.pictureBox1);
-            this.panel1.Location = new System.Drawing.Point(1019, 12);
+            this.panel1.Location = new System.Drawing.Point(110, 3);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(309, 272);
             this.panel1.TabIndex = 22;
+            // 
+            // rightPanel
+            // 
+            this.rightPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.rightPanel.Controls.Add(this.zAxisBoard);
+            this.rightPanel.Controls.Add(this.label8);
+            this.rightPanel.Controls.Add(this.panel1);
+            this.rightPanel.Controls.Add(this.gpsLoss_tb);
+            this.rightPanel.Controls.Add(this.label1);
+            this.rightPanel.Controls.Add(this.label7);
+            this.rightPanel.Controls.Add(this.goButton);
+            this.rightPanel.Controls.Add(this.IMU_AccelAccuracy_dd);
+            this.rightPanel.Controls.Add(this.totalSimulatedObjects_dd);
+            this.rightPanel.Controls.Add(this.label6);
+            this.rightPanel.Controls.Add(this.resultsListBox);
+            this.rightPanel.Controls.Add(this.IMU_GyroAccuracy_dd);
+            this.rightPanel.Controls.Add(this.label2);
+            this.rightPanel.Controls.Add(this.label5);
+            this.rightPanel.Controls.Add(this.speedTrackBar);
+            this.rightPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.rightPanel.Location = new System.Drawing.Point(909, 0);
+            this.rightPanel.Name = "rightPanel";
+            this.rightPanel.Size = new System.Drawing.Size(442, 636);
+            this.rightPanel.TabIndex = 23;
+            // 
+            // bottomPanel
+            // 
+            this.bottomPanel.Controls.Add(this.infoLabel);
+            this.bottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.bottomPanel.Location = new System.Drawing.Point(0, 574);
+            this.bottomPanel.Name = "bottomPanel";
+            this.bottomPanel.Size = new System.Drawing.Size(909, 62);
+            this.bottomPanel.TabIndex = 24;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1351, 636);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.gpsLoss_tb);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.IMU_AccelAccuracy_dd);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.IMU_GyroAccuracy_dd);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.speedTrackBar);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.resultsListBox);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.totalSimulatedObjects_dd);
-            this.Controls.Add(this.goButton);
-            this.Controls.Add(this.zAxisBoard);
-            this.Controls.Add(this.infoLabel);
+            this.Controls.Add(this.bottomPanel);
+            this.Controls.Add(this.rightPanel);
             this.Controls.Add(this.xyAxisPanel);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "MainForm";
             this.Text = "MainForm";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
             this.xyAxisPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.simulationPictureBox)).EndInit();
             this.zAxisBoard.ResumeLayout(false);
@@ -332,8 +356,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.speedTrackBar)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.rightPanel.ResumeLayout(false);
+            this.rightPanel.PerformLayout();
+            this.bottomPanel.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -361,6 +387,8 @@
         private System.Windows.Forms.TextBox gpsLoss_tb;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel rightPanel;
+        private System.Windows.Forms.Panel bottomPanel;
     }
 }
 

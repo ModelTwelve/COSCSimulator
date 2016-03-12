@@ -141,6 +141,16 @@ namespace COSCSimulator
             }
         }
 
+        private void MainForm_Paint(object sender, PaintEventArgs e)
+        {
+            // Try to maximize the viewing window
+            var bottomPanelLocation = bottomPanel.Location;
+            var rightPanelLocation = rightPanel.Location;
+            var xyAxisPanelLocation = xyAxisPanel.Location;
+            var newSize = new Size(rightPanelLocation.X- xyAxisPanelLocation.X, bottomPanelLocation.Y - xyAxisPanelLocation.Y);
+            xyAxisPanel.Size = newSize;
+        }
+
         private void z_Click(object sender, EventArgs e)
         {
             if (!simulationRunning)

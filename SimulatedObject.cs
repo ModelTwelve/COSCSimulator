@@ -76,14 +76,15 @@ namespace COSCSimulator
             double expectedZDistance = targetPosition.z - expectedPosition.z;
 
             // Get more precise angles from full expected distance
-            double theta = Math.Abs(
-                Math.Atan(expectedXDistance / expectedYDistance) * 180.0 / Math.PI
-                ); // polar
-            double phi = Math.Abs(
-                Math.Atan(
+            double theta = Math.Atan(expectedXDistance / expectedYDistance) * 180.0 / Math.PI; // polar
+            double phi = Math.Atan(
                 Math.Sqrt(Position.square(expectedXDistance) + Position.square(expectedYDistance)) / 
-                expectedZDistance) * 180.0 / Math.PI
-                ); // azimuthal  
+                expectedZDistance) * 180.0 / Math.PI; // azimuthal
+            
+            if (phi < 0)
+            {
+                phi += 180;
+            }
 
             // We actually need to move this far
             double actualDistance = actualPosition.distanceFrom(targetPosition);

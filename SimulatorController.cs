@@ -177,14 +177,13 @@ namespace COSCSimulator
 
             bool allDone = false;
 
+            int speedOffset = Convert.ToInt32(Math.Pow(2, speedTrackbarValue));
             while (!allDone)
-            {
-                int speedOffset = speedTrackbarValue * 10;
-
+            {               
                 ++steps;
                 if (steps % speedOffset == 0)
                 {
-                    //Task.Delay(delay).Wait();
+                    //Task.Delay(1).Wait();
                     Thread.Sleep(1);
                 }
 
