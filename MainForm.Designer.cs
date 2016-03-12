@@ -131,7 +131,8 @@
             "1",
             "2",
             "3",
-            "5"});
+            "5",
+            "6"});
             this.totalSimulatedObjects_dd.Location = new System.Drawing.Point(1040, 320);
             this.totalSimulatedObjects_dd.Name = "totalSimulatedObjects_dd";
             this.totalSimulatedObjects_dd.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -142,11 +143,11 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(1022, 304);
+            this.label1.Location = new System.Drawing.Point(1025, 304);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(112, 13);
+            this.label1.Size = new System.Drawing.Size(109, 13);
             this.label1.TabIndex = 8;
-            this.label1.Text = "Number of Objects";
+            this.label1.Text = "Formation Number";
             // 
             // resultsListBox
             // 

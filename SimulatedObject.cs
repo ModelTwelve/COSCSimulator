@@ -37,9 +37,13 @@ namespace COSCSimulator
             tickSpeed = speed / SimulatorController.ticksPerSecond;
         }
 
-        public void assignNodes(List<SimulatedObject> nodes)
+        public void assignNodes(List<SimulatedObject> nodes, double? gpsLoss=null)
         {
             positionLogic.assignNodes(nodes);
+            if (gpsLoss!=null)
+            {
+                positionLogic.setGPSLoss(gpsLoss.Value);
+            }
         }
 
         public bool areWeThereYet()

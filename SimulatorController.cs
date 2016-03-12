@@ -99,6 +99,11 @@ namespace COSCSimulator
 
                     movingObjects[0].assignNodes(new List<SimulatedObject> { movingObjects[1] , movingObjects[2] , movingObjects[3] });
                     break;
+                case 6:
+                    // going to goto layers now
+                    buildExtendedFormation(10, origin, destination, velocity, imuGyroAccuracy,
+                        imuAccelAccuracy, gpsLoss);
+                    break;
             }
 
             // Redraw goals
@@ -111,6 +116,56 @@ namespace COSCSimulator
                     Convert.ToSingle(mObj.targetPosition.x)-GPS_Module.maxRadius + (SimulatedObject.objectSize/2), 
                     Convert.ToSingle(mObj.targetPosition.y)-GPS_Module.maxRadius + (SimulatedObject.objectSize / 2), GPS_Module.maxRadius + GPS_Module.maxRadius, 
                     GPS_Module.maxRadius + GPS_Module.maxRadius);                
+            }
+        }
+
+        private void buildExtendedFormation(int layers,
+            Position origin, Position destination,
+            double velocity, double imuGyroAccuracy, double imuAccelAccuracy, double gpsLoss)
+        {
+            double spacing = 40;
+            int middleLayer = layers / 2;
+            int leaveOff = 1;
+            for (int layerNumber = 1; layerNumber < layers; layerNumber++)
+            {
+                double originXoffset = origin.x - (spacing * layerNumber);
+                double originYoffset = origin.y - (spacing * layerNumber);
+
+                double destinationXoffset = destination.x - (spacing * layerNumber);
+                double destinationYoffset = destination.y - (spacing * layerNumber);
+                int maxForRow = (layerNumber - 1) * 2 + 1;
+                
+                for (int oNumber = 1; oNumber <= maxForRow; oNumber++)
+                {
+                    originXoffset += spacing;
+                    destinationXoffset += spacing;
+
+                    Position newOrigin = new Position();
+                    newOrigin.Clone(origin);
+                    newOrigin.x = originXoffset;
+                    newOrigin.y = originYoffset;
+                    Position newDestination = new Position();
+                    newDestination.Clone(destination);
+                    newDestination.x = destinationXoffset;
+                    newDestination.y = destinationYoffset;
+
+                    if (layerNumber <= middleLayer)
+                    {
+                        movingObjects.Add(new SimulatedObject(newOrigin, newDestination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+                    }
+                    else if ( (oNumber <= (maxForRow+1) / 2 - leaveOff) || (oNumber >= (maxForRow+1)/2 + leaveOff) )
+                    {                        
+                        movingObjects.Add(new SimulatedObject(newOrigin, newDestination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+                    }
+                }
+                if (layerNumber > middleLayer)
+                {
+                    leaveOff *= 2;
+                }
+            }
+            for(int x=1;x<53;x++)
+            {
+                movingObjects[x].assignNodes(new List<SimulatedObject> { movingObjects[0], movingObjects[53], movingObjects[54] }, gpsLoss);
             }
         }
 

@@ -23,10 +23,17 @@ namespace COSCSimulator
             activeGPS = true;
             activeIMU = false;
             activeRSSI = false;
-            this.gpsLossInTicks = gpsLoss* SimulatorController.ticksPerSecond;
+
+            setGPSLoss(gpsLoss);
+
             gps = new GPS_Module();
             imu = new IMU_Module(imuGyroAccuracy, imuAccelAccuracy);
             rssi = new RSSI_Module();
+        }
+
+        public void setGPSLoss(double gpsLoss)
+        {
+            this.gpsLossInTicks = gpsLoss * SimulatorController.ticksPerSecond;
         }
 
         public void assignNodes(List<SimulatedObject> nodes)
