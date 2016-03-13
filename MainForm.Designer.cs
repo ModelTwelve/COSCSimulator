@@ -210,7 +210,7 @@
             this.speedTrackBar.Size = new System.Drawing.Size(146, 45);
             this.speedTrackBar.TabIndex = 14;
             this.speedTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.speedTrackBar.Value = 1;
+            this.speedTrackBar.Value = 5;
             this.speedTrackBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.speedTrackBar_MouseDown);
             // 
             // label5

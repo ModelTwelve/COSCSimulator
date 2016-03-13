@@ -23,8 +23,10 @@ namespace COSCSimulator
         int speedTrackbarValue;
 
         private Brush black = new SolidBrush(Color.Black);
+        private Brush blue = new SolidBrush(Color.Blue);
         private Brush red = new SolidBrush(Color.Red);
         private Brush yellow = new SolidBrush(Color.Yellow);
+        private Brush orange = new SolidBrush(Color.Orange);
 
         public SimulatorController(Panel xyPanel, PictureBox xyPictureBox, PictureBox zictureBox,
             ref int speedTrackbarValue,
@@ -49,12 +51,12 @@ namespace COSCSimulator
             buildFormation(formationStyle, origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss);
         }
 
-        public List<double> getDistances()
+        public List<Tuple<double,string>> getDistances()
         {
-            List<double> rv = new List<double>();
+            List<Tuple<double, string>> rv = new List<Tuple<double, string>>();
             foreach(var mObj in movingObjects)
             {
-                rv.Add(mObj.distanceFromTarget());
+                rv.Add(new Tuple<double, string>(mObj.distanceFromTarget(), mObj.isGPSActive() ? "" : "[NO GPS]"));
             }
             return rv;
         }
@@ -191,7 +193,7 @@ namespace COSCSimulator
 
             bool allDone = false;
 
-            int speedOffset = Convert.ToInt32(Math.Pow(2, speedTrackbarValue));
+            int speedOffset = Convert.ToInt32(Math.Pow(2, speedTrackbarValue)) * 10;
             while (!allDone)
             {               
                 ++steps;
@@ -231,12 +233,14 @@ namespace COSCSimulator
 
         private void showNewLocation(SimulatedObject mObj)
         {
-            xyGraphics.FillRectangle(yellow, Convert.ToInt32(mObj.prevActualPosition.x), Convert.ToInt32(mObj.prevActualPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);            
-            xyGraphics.FillRectangle(black, Convert.ToInt32(mObj.actualPosition.x), Convert.ToInt32(mObj.actualPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);
+            
+            xyGraphics.FillRectangle(mObj.isGPSActive() ? yellow : orange, Convert.ToInt32(mObj.prevActualPosition.x), Convert.ToInt32(mObj.prevActualPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);
+            xyGraphics.FillRectangle(mObj.isGPSActive() ? black : blue, Convert.ToInt32(mObj.actualPosition.x), Convert.ToInt32(mObj.actualPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);
+   
             //gObjSimulationBoard.FillRectangle(yellow, Convert.ToInt32(mObj.prevActualXPosition) + (size / 2), Convert.ToInt32(mObj.prevActualYPosition) + (size / 2), 1, 1);
 
-            zGraphics.FillRectangle(yellow, zXConstant, Convert.ToInt32(mObj.prevActualPosition.z), SimulatedObject.objectSize, SimulatedObject.objectSize);            
-            zGraphics.FillRectangle(black, zXConstant, Convert.ToInt32(mObj.actualPosition.z), SimulatedObject.objectSize, SimulatedObject.objectSize);
+            zGraphics.FillRectangle(mObj.isGPSActive() ? yellow : orange, zXConstant, Convert.ToInt32(mObj.prevActualPosition.z), SimulatedObject.objectSize, SimulatedObject.objectSize);            
+            zGraphics.FillRectangle(mObj.isGPSActive() ? black : blue, zXConstant, Convert.ToInt32(mObj.actualPosition.z), SimulatedObject.objectSize, SimulatedObject.objectSize);
             //gObjZAxisBoard.FillRectangle(yellow, zXConstant + (size / 2), Convert.ToInt32(mObj.prevActualZPosition), 1, 1);
         }
     }

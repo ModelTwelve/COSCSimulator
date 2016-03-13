@@ -46,6 +46,11 @@ namespace COSCSimulator
             }
         }
 
+        public bool isGPSActive()
+        {
+            return positionLogic.isGPSActive();
+    }
+
         public bool areWeThereYet()
         {
             return actualPosition.x == targetPosition.x && 

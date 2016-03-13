@@ -36,6 +36,11 @@ namespace COSCSimulator
             this.gpsLossInTicks = gpsLoss * SimulatorController.ticksPerSecond;
         }
 
+        public bool isGPSActive()
+        {
+            return activeGPS;
+        }
+
         public void assignNodes(List<SimulatedObject> nodes)
         {
             rssi.assignNodes(nodes);
