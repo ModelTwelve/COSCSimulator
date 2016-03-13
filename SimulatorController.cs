@@ -20,7 +20,7 @@ namespace COSCSimulator
 
         PictureBox xyPictureBox, zPictureBox;
         Graphics xyGraphics, zGraphics;
-        int speedTrackbarValue;
+        SpeedReference stv;
 
         private Brush black = new SolidBrush(Color.Black);
         private Brush blue = new SolidBrush(Color.Blue);
@@ -28,8 +28,10 @@ namespace COSCSimulator
         private Brush yellow = new SolidBrush(Color.Yellow);
         private Brush orange = new SolidBrush(Color.Orange);
 
+        public int currentSimulatedTickCount { get; private set; } = 0;
+
         public SimulatorController(Panel xyPanel, PictureBox xyPictureBox, PictureBox zictureBox,
-            ref int speedTrackbarValue,
+            SpeedReference stv,
             int formationStyle, double simulationDuration,
             Position origin, Position destination,
             double velocity, double imuGyroAccuracy, double imuAccelAccuracy,
@@ -44,7 +46,7 @@ namespace COSCSimulator
             xyGraphics = Graphics.FromImage(this.xyPictureBox.Image);
             zGraphics = Graphics.FromImage(this.zPictureBox.Image);
 
-            this.speedTrackbarValue = speedTrackbarValue;            
+            this.stv = stv;            
 
             zXConstant = zictureBox.Size.Width / 2;
 
@@ -187,24 +189,22 @@ namespace COSCSimulator
 
         public void Run(CancellationTokenSource token)
         {
-            //int delay = 1;
-
-            int steps = 0;
+            //int delay = 1;           
 
             bool allDone = false;
-
-            int speedOffset = Convert.ToInt32(Math.Pow(2, speedTrackbarValue)) * 10;
+            
             while (!allDone)
-            {               
-                ++steps;
-                if (steps % speedOffset == 0)
+            {
+                int speedOffset = Convert.ToInt32(Math.Pow(2, stv.speedTrackbarValue));
+                ++currentSimulatedTickCount;
+                if (currentSimulatedTickCount % speedOffset == 0)
                 {
                     //Task.Delay(1).Wait();
                     Thread.Sleep(1);
                 }
 
                 // Have we already taken enough steps to end the simulation?
-                if (steps >= simulationDuration)
+                if (currentSimulatedTickCount >= simulationDuration)
                 {
                     // No need to set alldone let's just get outta here
                     break;
@@ -233,10 +233,9 @@ namespace COSCSimulator
 
         private void showNewLocation(SimulatedObject mObj)
         {
-            
             xyGraphics.FillRectangle(mObj.isGPSActive() ? yellow : orange, Convert.ToInt32(mObj.prevActualPosition.x), Convert.ToInt32(mObj.prevActualPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);
             xyGraphics.FillRectangle(mObj.isGPSActive() ? black : blue, Convert.ToInt32(mObj.actualPosition.x), Convert.ToInt32(mObj.actualPosition.y), SimulatedObject.objectSize, SimulatedObject.objectSize);
-   
+
             //gObjSimulationBoard.FillRectangle(yellow, Convert.ToInt32(mObj.prevActualXPosition) + (size / 2), Convert.ToInt32(mObj.prevActualYPosition) + (size / 2), 1, 1);
 
             zGraphics.FillRectangle(mObj.isGPSActive() ? yellow : orange, zXConstant, Convert.ToInt32(mObj.prevActualPosition.z), SimulatedObject.objectSize, SimulatedObject.objectSize);            

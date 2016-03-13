@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace COSCSimulator
-{
+{ 
     public static class SimRandom
     {
         private static Random random = new Random();

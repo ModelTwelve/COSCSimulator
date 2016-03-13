@@ -14,7 +14,7 @@ using System.Windows.Forms;
 namespace COSCSimulator
 {
     public partial class MainForm : Form
-    {
+    {        
         private int x1, y1, x2, y2, z1, z2;
         private int zXConstant;
         private double velocity = 44;
@@ -24,12 +24,15 @@ namespace COSCSimulator
         private CancellationTokenSource tokenSource = null;
 
         private bool simulationRunning = false;
-        private double simulationDuration = 0;
-        private int speedTrackbarValue = 1;
+        private double simulationDuration = 0;        
 
         public const string directions = "Left Click Sets Current Position and Right Click Sets Target Position";
 
-        private BetterTimer mainTimer = new BetterTimer();        
+        private System.Timers.Timer mainTimer = new System.Timers.Timer();
+
+        private SpeedReference stv = new SpeedReference();
+        private SimulatorController controller;
+        private double totalSimulationDistance = 0;
 
         public MainForm()
         {
@@ -37,7 +40,7 @@ namespace COSCSimulator
             
             mainTimer.Enabled = false;
             mainTimer.Interval = 1000;
-            mainTimer.Tick += new EventHandler(mainTimer_Tick);            
+            mainTimer.Elapsed += new System.Timers.ElapsedEventHandler(mainTimer_Tick);            
     
             // Initial board setup
             //simulatorBoardBitmap = new Bitmap(simulationBoard.Size.Width, simulationBoard.Size.Height);           
@@ -49,9 +52,9 @@ namespace COSCSimulator
             IMU_GyroAccuracy_dd.SelectedIndex = 2;
             IMU_AccelAccuracy_dd.SelectedIndex = 0;
 
-            x1 = xyAxisPanel.Size.Width / 4;
-            y1 = xyAxisPanel.Size.Height / 10;
-            z1 = zAxisPictureBox.Size.Height / 3;
+            x1 = xyAxisPanel.Size.Width / 2;
+            y1 = xyAxisPanel.Size.Height / 2;
+            z1 = zAxisPictureBox.Size.Height / 2;
 
             x2 = xyAxisPanel.Size.Width-100;
             y2 = simulationPictureBox.Image.Height-100;
@@ -72,6 +75,14 @@ namespace COSCSimulator
             | BindingFlags.Instance | BindingFlags.NonPublic, null,
             simulationPictureBox, new object[] { true });
 
+            ((Bitmap)origPicBox.Image).MakeTransparent(((Bitmap)origPicBox.Image).GetPixel(1, 1));
+            origPicBox.BackColor = System.Drawing.Color.Transparent;
+            origPicBox.Parent = simulationPictureBox;
+
+            ((Bitmap)destPicBox.Image).MakeTransparent(((Bitmap)destPicBox.Image).GetPixel(1, 1));
+            destPicBox.BackColor = System.Drawing.Color.Transparent;
+            destPicBox.Parent = simulationPictureBox;
+
             paintXY();
             paintZ();            
         }                
@@ -87,9 +98,14 @@ namespace COSCSimulator
             Graphics gObj = Graphics.FromImage(simulationPictureBox.Image);
 
             //gObj.ScaleTransform(zoomFactor, zoomFactor);
-            
-            gObj.FillEllipse(black, new Rectangle(x1, y1, 20, 20));
-            gObj.FillEllipse(red, new Rectangle(x2, y2, 20, 20));
+
+            //gObj.FillEllipse(black, new Rectangle(x1, y1, 20, 20));
+            //gObj.FillEllipse(red, new Rectangle(x2, y2, 20, 20));
+            origPicBox.Visible = true;
+            destPicBox.Visible = true;
+            origPicBox.Location = new Point(x1 - (origPicBox.Width / 2), y1 - origPicBox.Height);
+            destPicBox.Location = new Point(x2 - (destPicBox.Width / 2), y2 - destPicBox.Height);
+
             simulationPictureBox.Invalidate();
         }
 
@@ -171,7 +187,17 @@ namespace COSCSimulator
         private void mainTimer_Tick(object sender, EventArgs e)
         {
             // Update anything that needs to update less frequently such as labels and text and whatnot
-            speedTrackbarValue = speedTrackBar.Value;
+            if (InvokeRequired)
+            {
+                this.BeginInvoke(new Action(timerAction));
+            }
+        }
+
+        private void timerAction()
+        {
+            int simulatedSecondsElapsed = controller.currentSimulatedTickCount / Convert.ToInt32(SimulatorController.ticksPerSecond);
+            infoLabel.Text = "Distance = " + Math.Round(totalSimulationDistance, 0).ToString() + " feet. Expected Flight Duration in Seconds = " + simulationDuration.ToString() + ", Simulated Seconds = "+ simulatedSecondsElapsed.ToString();
+            stv.speedTrackbarValue = speedTrackBar.Value;
         }
 
         private void clearZ()
@@ -194,7 +220,14 @@ namespace COSCSimulator
         {
             if (!simulationRunning)
             {
+                gpsLoss_tb.Enabled = false;
+                totalSimulatedObjects_dd.Enabled = false;
+                IMU_AccelAccuracy_dd.Enabled = false;
+                IMU_GyroAccuracy_dd.Enabled = false;
+
                 resultsListBox.Items.Clear();
+                origPicBox.Visible = false;
+                destPicBox.Visible = false;
                 clearXY();
                 paintZ();
 
@@ -202,9 +235,9 @@ namespace COSCSimulator
                 double tX = x2 - x1;
                 double tY = y2 - y1;
                 double tZ = z2 - z1;
-                double tLength = Math.Sqrt(tX * tX + tY * tY + tZ * tZ);
-                simulationDuration = Math.Round(tLength / velocity, 4);
-                infoLabel.Text = "Distance = " + Math.Round(tLength, 0).ToString() + " feet. Expected Flight Duration in Seconds = " + simulationDuration.ToString();
+                totalSimulationDistance = Math.Sqrt(tX * tX + tY * tY + tZ * tZ);
+                simulationDuration = Math.Round(totalSimulationDistance / velocity, 4);
+                infoLabel.Text = "Distance = " + Math.Round(totalSimulationDistance, 0).ToString() + " feet. Expected Flight Duration in Seconds = " + simulationDuration.ToString();
 
                 stopwatch.Reset();
                 stopwatch.Start();
@@ -222,8 +255,8 @@ namespace COSCSimulator
                 Position origin = new Position(x1, y1, z1);
                 Position destination = new Position(x2, y2, z2);                
 
-                speedTrackbarValue = speedTrackBar.Value;
-                SimulatorController controller = new SimulatorController(xyAxisPanel, simulationPictureBox, zAxisPictureBox, ref speedTrackbarValue,
+                stv.speedTrackbarValue = speedTrackBar.Value;
+                controller = new SimulatorController(xyAxisPanel, simulationPictureBox, zAxisPictureBox, stv,
                     formationStyle, simulationDuration, origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss);
 
                 tokenSource = new CancellationTokenSource();
@@ -251,6 +284,11 @@ namespace COSCSimulator
             infoLabel.Text = directions;            
             goButton.Text = "GO!";
             simulationRunning = false;
+
+            gpsLoss_tb.Enabled = true;
+            totalSimulatedObjects_dd.Enabled = true;
+            IMU_AccelAccuracy_dd.Enabled = true;
+            IMU_GyroAccuracy_dd.Enabled = true;
         }
     }
 }

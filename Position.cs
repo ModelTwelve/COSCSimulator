@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace COSCSimulator
 {
+    public class SpeedReference
+    {
+        public int speedTrackbarValue = 1;
+    }
+
     public class Position
     {
         public double x = 0, y = 0, z = 0;

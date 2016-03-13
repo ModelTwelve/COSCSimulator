@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.xyAxisPanel = new System.Windows.Forms.Panel();
+            this.destPicBox = new System.Windows.Forms.PictureBox();
+            this.origPicBox = new System.Windows.Forms.PictureBox();
             this.simulationPictureBox = new System.Windows.Forms.PictureBox();
             this.infoLabel = new System.Windows.Forms.Label();
             this.zAxisBoard = new System.Windows.Forms.Panel();
@@ -54,6 +56,8 @@
             this.rightPanel = new System.Windows.Forms.Panel();
             this.bottomPanel = new System.Windows.Forms.Panel();
             this.xyAxisPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.destPicBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.origPicBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.simulationPictureBox)).BeginInit();
             this.zAxisBoard.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.zAxisPictureBox)).BeginInit();
@@ -68,12 +72,36 @@
             // 
             this.xyAxisPanel.AutoScroll = true;
             this.xyAxisPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.xyAxisPanel.Controls.Add(this.destPicBox);
+            this.xyAxisPanel.Controls.Add(this.origPicBox);
             this.xyAxisPanel.Controls.Add(this.simulationPictureBox);
             this.xyAxisPanel.Location = new System.Drawing.Point(12, 12);
             this.xyAxisPanel.Name = "xyAxisPanel";
             this.xyAxisPanel.Size = new System.Drawing.Size(879, 544);
             this.xyAxisPanel.TabIndex = 1;
             this.xyAxisPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.xyAxisPanel_Paint);
+            // 
+            // destPicBox
+            // 
+            this.destPicBox.BackColor = System.Drawing.SystemColors.Control;
+            this.destPicBox.Image = ((System.Drawing.Image)(resources.GetObject("destPicBox.Image")));
+            this.destPicBox.Location = new System.Drawing.Point(252, 89);
+            this.destPicBox.Name = "destPicBox";
+            this.destPicBox.Size = new System.Drawing.Size(63, 59);
+            this.destPicBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.destPicBox.TabIndex = 2;
+            this.destPicBox.TabStop = false;
+            // 
+            // origPicBox
+            // 
+            this.origPicBox.BackColor = System.Drawing.SystemColors.Control;
+            this.origPicBox.Image = ((System.Drawing.Image)(resources.GetObject("origPicBox.Image")));
+            this.origPicBox.Location = new System.Drawing.Point(152, 89);
+            this.origPicBox.Name = "origPicBox";
+            this.origPicBox.Size = new System.Drawing.Size(63, 59);
+            this.origPicBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.origPicBox.TabIndex = 1;
+            this.origPicBox.TabStop = false;
             // 
             // simulationPictureBox
             // 
@@ -91,7 +119,7 @@
             this.infoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.infoLabel.Location = new System.Drawing.Point(12, 12);
             this.infoLabel.Name = "infoLabel";
-            this.infoLabel.Size = new System.Drawing.Size(555, 31);
+            this.infoLabel.Size = new System.Drawing.Size(879, 31);
             this.infoLabel.TabIndex = 2;
             this.infoLabel.Text = "Get Started";
             this.infoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -210,7 +238,7 @@
             this.speedTrackBar.Size = new System.Drawing.Size(146, 45);
             this.speedTrackBar.TabIndex = 14;
             this.speedTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.speedTrackBar.Value = 5;
+            this.speedTrackBar.Value = 1;
             this.speedTrackBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.speedTrackBar_MouseDown);
             // 
             // label5
@@ -348,6 +376,8 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
             this.xyAxisPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.destPicBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.origPicBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.simulationPictureBox)).EndInit();
             this.zAxisBoard.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.zAxisPictureBox)).EndInit();
@@ -388,6 +418,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel rightPanel;
         private System.Windows.Forms.Panel bottomPanel;
+        private System.Windows.Forms.PictureBox origPicBox;
+        private System.Windows.Forms.PictureBox destPicBox;
     }
 }
 

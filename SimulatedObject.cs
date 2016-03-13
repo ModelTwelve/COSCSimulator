@@ -8,7 +8,7 @@ namespace COSCSimulator
 {
     public class SimulatedObject
     {        
-        public const int objectSize = 4;
+        public const int objectSize = 6;
 
         private PositionProtocolLogic positionLogic;
 

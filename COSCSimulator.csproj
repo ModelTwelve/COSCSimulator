@@ -44,9 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BetterTimer.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="IMU_Module.cs" />
     <Compile Include="GPS_Module.cs" />
     <Compile Include="MainForm.cs">
