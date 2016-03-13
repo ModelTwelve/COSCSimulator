@@ -122,6 +122,21 @@ namespace COSCSimulator
             Position origin, Position destination,
             double velocity, double imuGyroAccuracy, double imuAccelAccuracy, double gpsLoss)
         {
+
+            //double dX = destination.x - origin.x;
+            //double dY = destination.y - origin.y;
+            //double theta = Math.Atan(dX / dY) * 180.0 / Math.PI;
+
+            //double spacingDistance = 40;
+
+            //dX = origin.x + spacingDistance * Math.Cos((Convert.ToDouble(System.Math.PI) / 180) * theta);
+            //dY = origin.y + spacingDistance * Math.Sin((Convert.ToDouble(System.Math.PI) / 180) * theta);
+
+            //dX -= origin.x;
+            //dY -= origin.y;
+
+            //double dLength = Math.Sqrt(dX * dX + dY * dY);
+
             double spacing = 40;
             int middleLayer = layers / 2;
             int leaveOff = 1;

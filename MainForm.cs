@@ -192,6 +192,22 @@ namespace COSCSimulator
 
         private async void goButton_Click(object sender, EventArgs e)
         {
+            //double dX = x2 - x1;
+            //double dY = y2 - y1;
+            //double dLength = Math.Sqrt(dX * dX + dY * dY);
+            //double theta = Math.Atan(dX / dY) * 180.0 / Math.PI;
+
+            //double d = 40;
+            //double nx2 = x1 + d * Math.Cos((Convert.ToDouble(System.Math.PI) / 180) * theta);
+            //double ny2 = y1 + d * Math.Sin((Convert.ToDouble(System.Math.PI) / 180) * theta);
+
+            //dX = nx2 - x1;
+            //dY = ny2 - y1;
+
+            //dLength = Math.Sqrt(dX * dX + dY * dY);
+
+            //return;
+
             if (!simulationRunning)
             {
                 resultsListBox.Items.Clear();

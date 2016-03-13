@@ -80,11 +80,13 @@ namespace COSCSimulator
             double phi = Math.Atan(
                 Math.Sqrt(Position.square(expectedXDistance) + Position.square(expectedYDistance)) / 
                 expectedZDistance) * 180.0 / Math.PI; // azimuthal
-            
-            if (phi < 0)
-            {
-                phi += 180;
-            }
+
+            theta = Math.Abs(theta);
+            phi = Math.Abs(phi);
+            //if (phi < 0)
+            //{
+            //    phi += 180;
+            //}
 
             // We actually need to move this far
             double actualDistance = actualPosition.distanceFrom(targetPosition);

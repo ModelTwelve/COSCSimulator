@@ -67,6 +67,19 @@ namespace COSCSimulator
             expectedPosition.y += expectedYTickDistance;
             expectedPosition.z += expectedZTickDistance;
 
+            if (expectedXTickDistance<0)
+            {
+                x *= -1;
+            }
+            if (expectedYTickDistance < 0)
+            {
+                y *= -1;
+            }
+            if (expectedZTickDistance < 0)
+            {
+                z *= -1;
+            }
+
             actualPosition.x += x;
             actualPosition.y += y;
             actualPosition.z += z;
