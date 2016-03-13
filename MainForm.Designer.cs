@@ -67,6 +67,7 @@
             // xyAxisPanel
             // 
             this.xyAxisPanel.AutoScroll = true;
+            this.xyAxisPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.xyAxisPanel.Controls.Add(this.simulationPictureBox);
             this.xyAxisPanel.Location = new System.Drawing.Point(12, 12);
             this.xyAxisPanel.Name = "xyAxisPanel";
@@ -78,9 +79,9 @@
             // 
             this.simulationPictureBox.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.simulationPictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("simulationPictureBox.BackgroundImage")));
-            this.simulationPictureBox.Location = new System.Drawing.Point(12, 15);
+            this.simulationPictureBox.Location = new System.Drawing.Point(-1, -1);
             this.simulationPictureBox.Name = "simulationPictureBox";
-            this.simulationPictureBox.Size = new System.Drawing.Size(5280, 5280);
+            this.simulationPictureBox.Size = new System.Drawing.Size(5293, 5296);
             this.simulationPictureBox.TabIndex = 0;
             this.simulationPictureBox.TabStop = false;
             this.simulationPictureBox.Click += new System.EventHandler(this.xy_Click);
@@ -132,26 +133,25 @@
             this.totalSimulatedObjects_dd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.totalSimulatedObjects_dd.FormattingEnabled = true;
             this.totalSimulatedObjects_dd.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "5",
-            "6"});
-            this.totalSimulatedObjects_dd.Location = new System.Drawing.Point(133, 307);
+            "Single",
+            "Double (Line)",
+            "Triple (Line)",
+            "Five (Hub)",
+            "Fifty Five (Arrow)"});
+            this.totalSimulatedObjects_dd.Location = new System.Drawing.Point(110, 307);
             this.totalSimulatedObjects_dd.Name = "totalSimulatedObjects_dd";
-            this.totalSimulatedObjects_dd.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.totalSimulatedObjects_dd.Size = new System.Drawing.Size(94, 21);
+            this.totalSimulatedObjects_dd.Size = new System.Drawing.Size(156, 21);
             this.totalSimulatedObjects_dd.TabIndex = 7;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(118, 291);
+            this.label1.Location = new System.Drawing.Point(172, 291);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(109, 13);
+            this.label1.Size = new System.Drawing.Size(94, 13);
             this.label1.TabIndex = 8;
-            this.label1.Text = "Formation Number";
+            this.label1.Text = "Formation Style";
             // 
             // resultsListBox
             // 
@@ -234,7 +234,6 @@
             "300"});
             this.IMU_GyroAccuracy_dd.Location = new System.Drawing.Point(373, 283);
             this.IMU_GyroAccuracy_dd.Name = "IMU_GyroAccuracy_dd";
-            this.IMU_GyroAccuracy_dd.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.IMU_GyroAccuracy_dd.Size = new System.Drawing.Size(48, 21);
             this.IMU_GyroAccuracy_dd.TabIndex = 16;
             // 
@@ -269,7 +268,6 @@
             "300"});
             this.IMU_AccelAccuracy_dd.Location = new System.Drawing.Point(373, 309);
             this.IMU_AccelAccuracy_dd.Name = "IMU_AccelAccuracy_dd";
-            this.IMU_AccelAccuracy_dd.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.IMU_AccelAccuracy_dd.Size = new System.Drawing.Size(48, 21);
             this.IMU_AccelAccuracy_dd.TabIndex = 18;
             // 
@@ -277,10 +275,10 @@
             // 
             this.gpsLoss_tb.Location = new System.Drawing.Point(348, 378);
             this.gpsLoss_tb.Name = "gpsLoss_tb";
-            this.gpsLoss_tb.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.gpsLoss_tb.Size = new System.Drawing.Size(73, 20);
             this.gpsLoss_tb.TabIndex = 20;
             this.gpsLoss_tb.Text = "10";
+            this.gpsLoss_tb.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label8
             // 
@@ -347,6 +345,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "MainForm";
             this.Text = "MainForm";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
             this.xyAxisPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.simulationPictureBox)).EndInit();

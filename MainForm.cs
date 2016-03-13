@@ -73,9 +73,7 @@ namespace COSCSimulator
             simulationPictureBox, new object[] { true });
 
             paintXY();
-            paintZ();
-
-            this.CenterToScreen();
+            paintZ();            
         }                
         
         private void clearXY()
@@ -215,7 +213,7 @@ namespace COSCSimulator
                 
                 goButton.Text = "STOP!";
 
-                int numberOfObjects = Convert.ToInt32(totalSimulatedObjects_dd.Text);
+                int formationStyle = Convert.ToInt32(totalSimulatedObjects_dd.SelectedIndex);
 
                 double imuGyroAccuracy = Convert.ToDouble(IMU_GyroAccuracy_dd.Text);
                 double imuAccelAccuracy = Convert.ToDouble(IMU_AccelAccuracy_dd.Text);
@@ -226,7 +224,7 @@ namespace COSCSimulator
 
                 speedTrackbarValue = speedTrackBar.Value;
                 SimulatorController controller = new SimulatorController(xyAxisPanel, simulationPictureBox, zAxisPictureBox, ref speedTrackbarValue,
-                    numberOfObjects, simulationDuration, origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss);
+                    formationStyle, simulationDuration, origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss);
 
                 tokenSource = new CancellationTokenSource();
 

@@ -28,7 +28,7 @@ namespace COSCSimulator
 
         public SimulatorController(Panel xyPanel, PictureBox xyPictureBox, PictureBox zictureBox,
             ref int speedTrackbarValue,
-            int formationNumber, double simulationDuration,
+            int formationStyle, double simulationDuration,
             Position origin, Position destination,
             double velocity, double imuGyroAccuracy, double imuAccelAccuracy,
             double gpsLoss)
@@ -46,7 +46,7 @@ namespace COSCSimulator
 
             zXConstant = zictureBox.Size.Width / 2;
 
-            buildFormation(formationNumber, origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss);
+            buildFormation(formationStyle, origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss);
         }
 
         public List<double> getDistances()
@@ -65,23 +65,22 @@ namespace COSCSimulator
         {                      
             switch (formationNumber)
             {
-                case 1:
+                case 0:
                     movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss));
                     break;
-                case 2:
+                case 1:
                     movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss));
                     origin.x -= 40; destination.x -= 40;
                     movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
                     break;
-                case 3:
+                case 2:
                     movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss));
                     origin.x -= 40; destination.x -= 40;
                     movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
                     origin.x += 80; destination.x += 80;
                     movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
                     break;
-
-                case 5:
+                case 3:
                     movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss));
 
                     origin.x -= 40; destination.x -= 40;
@@ -99,7 +98,7 @@ namespace COSCSimulator
 
                     movingObjects[0].assignNodes(new List<SimulatedObject> { movingObjects[1] , movingObjects[2] , movingObjects[3] });
                     break;
-                case 6:
+                case 4:
                     // going to goto layers now
                     buildExtendedFormation(10, origin, destination, velocity, imuGyroAccuracy,
                         imuAccelAccuracy, gpsLoss);
