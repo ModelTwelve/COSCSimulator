@@ -22,9 +22,9 @@ namespace COSCSimulator
 
         private double tickSpeed;        
 
-        public SimulatedObject(Position origin, Position destination, double velocity, double imuGyroAccuracy, double imuAccelAccuracy, double gpsLoss)
+        public SimulatedObject(Position origin, Position destination, double velocity, double imuGyroAccuracy, double imuAccelAccuracy, int roundTripTime, double gpsLoss)
         {
-            positionLogic = new PositionProtocolLogic(imuGyroAccuracy, imuAccelAccuracy, gpsLoss);
+            positionLogic = new PositionProtocolLogic(imuGyroAccuracy, imuAccelAccuracy, roundTripTime, gpsLoss);
 
             actualPosition.Clone(origin);
             prevActualPosition.Clone(origin);

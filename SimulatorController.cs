@@ -34,7 +34,7 @@ namespace COSCSimulator
             SpeedReference stv,
             int formationStyle, double simulationDuration,
             Position origin, Position destination,
-            double velocity, double imuGyroAccuracy, double imuAccelAccuracy,
+            double velocity, double imuGyroAccuracy, double imuAccelAccuracy, int roundTripTime,
             double gpsLoss)
         {
             // Make the duration (in seconds) into ticks
@@ -50,7 +50,7 @@ namespace COSCSimulator
 
             zXConstant = zictureBox.Size.Width / 2;
 
-            buildFormation(formationStyle, origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss);
+            buildFormation(formationStyle, origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, roundTripTime, gpsLoss);
         }
 
         public List<Tuple<double,string>> getDistances()
@@ -65,47 +65,47 @@ namespace COSCSimulator
 
         private void buildFormation(int formationNumber,
             Position origin, Position destination,
-            double velocity, double imuGyroAccuracy, double imuAccelAccuracy, double gpsLoss)
+            double velocity, double imuGyroAccuracy, double imuAccelAccuracy, int roundTripTime, double gpsLoss)
         {                      
             switch (formationNumber)
             {
                 case 0:
-                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss));
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, roundTripTime, gpsLoss));
                     break;
                 case 1:
-                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss));
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, roundTripTime, gpsLoss));
                     origin.x -= 40; destination.x -= 40;
-                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, roundTripTime, 0));
                     break;
                 case 2:
-                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss));
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, roundTripTime, gpsLoss));
                     origin.x -= 40; destination.x -= 40;
-                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, roundTripTime, 0));
                     origin.x += 80; destination.x += 80;
-                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, roundTripTime, 0));
                     break;
                 case 3:
-                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss));
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, roundTripTime, gpsLoss));
 
                     origin.x -= 40; destination.x -= 40;
                     origin.y -= 40; destination.y -= 40;
-                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, roundTripTime, 0));
 
                     origin.y += 80; destination.y += 80;
-                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, roundTripTime, 0));
                     
                     origin.x += 80; destination.x += 80;
-                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, roundTripTime, 0));
 
                     origin.y -= 80; destination.y -= 80;
-                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+                    movingObjects.Add(new SimulatedObject(origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, roundTripTime, 0));
 
                     movingObjects[0].assignNodes(new List<SimulatedObject> { movingObjects[1] , movingObjects[2] , movingObjects[3] });
                     break;
                 case 4:
                     // going to goto layers now
                     buildExtendedFormation(10, origin, destination, velocity, imuGyroAccuracy,
-                        imuAccelAccuracy, gpsLoss);
+                        imuAccelAccuracy, roundTripTime, gpsLoss);
                     break;
             }
 
@@ -124,7 +124,7 @@ namespace COSCSimulator
 
         private void buildExtendedFormation(int layers,
             Position origin, Position destination,
-            double velocity, double imuGyroAccuracy, double imuAccelAccuracy, double gpsLoss)
+            double velocity, double imuGyroAccuracy, double imuAccelAccuracy, int roundTripTime, double gpsLoss)
         {
 
             //double dX = destination.x - origin.x;
@@ -169,11 +169,11 @@ namespace COSCSimulator
 
                     if (layerNumber <= middleLayer)
                     {
-                        movingObjects.Add(new SimulatedObject(newOrigin, newDestination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+                        movingObjects.Add(new SimulatedObject(newOrigin, newDestination, velocity, imuGyroAccuracy, imuAccelAccuracy, roundTripTime, 0));
                     }
                     else if ( (oNumber <= (maxForRow+1) / 2 - leaveOff) || (oNumber >= (maxForRow+1)/2 + leaveOff) )
                     {                        
-                        movingObjects.Add(new SimulatedObject(newOrigin, newDestination, velocity, imuGyroAccuracy, imuAccelAccuracy, 0));
+                        movingObjects.Add(new SimulatedObject(newOrigin, newDestination, velocity, imuGyroAccuracy, imuAccelAccuracy, roundTripTime, 0));
                     }
                 }
                 if (layerNumber > middleLayer)

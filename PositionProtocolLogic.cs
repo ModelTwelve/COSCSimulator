@@ -19,7 +19,7 @@ namespace COSCSimulator
 
         private Position calculatedTrilateratePosition = null;
 
-        public PositionProtocolLogic(double imuGyroAccuracy, double imuAccelAccuracy, double gpsLoss)
+        public PositionProtocolLogic(double imuGyroAccuracy, double imuAccelAccuracy, int roundTripTime, double gpsLoss)
         {
             activePerfectPosition = false;
             activeGPS = true;
@@ -30,7 +30,7 @@ namespace COSCSimulator
 
             gps = new GPS_Module();
             imu = new IMU_Module(imuGyroAccuracy, imuAccelAccuracy);
-            rssi = new RSSI_Module();
+            rssi = new RSSI_Module(roundTripTime);
         }
 
         public void setGPSLoss(double gpsLoss)

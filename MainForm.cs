@@ -253,6 +253,7 @@ namespace COSCSimulator
                 double imuGyroAccuracy = Convert.ToDouble(IMU_GyroAccuracy_dd.Text);
                 double imuAccelAccuracy = Convert.ToDouble(IMU_AccelAccuracy_dd.Text);
                 double gpsLoss = Convert.ToDouble(gpsLoss_tb.Text);
+                int roundTripTime = Convert.ToInt32(RTT_tb.Text);
 
                 StringBuilder sb = new StringBuilder();
                 StreamWriter logFile = null;
@@ -297,7 +298,7 @@ namespace COSCSimulator
 
                     stv.speedTrackbarValue = speedTrackBar.Value;
                     controller = new SimulatorController(xyAxisPanel, simulationPictureBox, zAxisPictureBox, stv,
-                        formationStyle, simulationDuration, origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss);
+                        formationStyle, simulationDuration, origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, roundTripTime, gpsLoss);
                     
                     Application.DoEvents();
                     await Task.Run(() =>
@@ -311,7 +312,7 @@ namespace COSCSimulator
                         double distance = info.Item1;
                         string descript = info.Item2;
 
-                        if (Log_cb.Checked)
+                        if (logFile!=null)
                         {
                             // We cut it short by GPS length to avoid last minute bad decisions
                             distance -= GPS_Module.maxRadius;
@@ -324,7 +325,7 @@ namespace COSCSimulator
                         sb.Append(",");
                         resultsListBox.Items.Add(Math.Round(distance, 2).ToString() + " " + descript);
                     }
-                    if (Log_cb.Checked)
+                    if (logFile != null)
                     {
                         if (sb.Length > 0)
                         {
@@ -333,7 +334,7 @@ namespace COSCSimulator
                         logFile.WriteLine(sb.ToString());
                     }
                 }
-                if (Log_cb.Checked)
+                if (logFile != null)
                 {
                     logFile.Flush();
                     logFile.Close();
