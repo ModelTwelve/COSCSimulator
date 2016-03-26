@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -224,54 +225,106 @@ namespace COSCSimulator
                 totalSimulatedObjects_dd.Enabled = false;
                 IMU_AccelAccuracy_dd.Enabled = false;
                 IMU_GyroAccuracy_dd.Enabled = false;
-
-                resultsListBox.Items.Clear();
+                
                 origPicBox.Visible = false;
                 destPicBox.Visible = false;
-                clearXY();
-                paintZ();
 
-                simulationRunning = true;
+                int repeatCount = 1;
+                try
+                {
+                    repeatCount = Convert.ToInt32(Repeat_tb.Text);
+                }
+                catch
+                {
+
+                }
+
+                tokenSource = new CancellationTokenSource();
                 double tX = x2 - x1;
                 double tY = y2 - y1;
                 double tZ = z2 - z1;
-                totalSimulationDistance = Math.Sqrt(tX * tX + tY * tY + tZ * tZ);
+                totalSimulationDistance = Math.Sqrt(tX * tX + tY * tY + tZ * tZ);                
                 simulationDuration = Math.Round(totalSimulationDistance / velocity, 4);
-                infoLabel.Text = "Distance = " + Math.Round(totalSimulationDistance, 0).ToString() + " feet. Expected Flight Duration in Seconds = " + simulationDuration.ToString();
-
-                stopwatch.Reset();
-                stopwatch.Start();
-                mainTimer.Interval = 100;
-                mainTimer.Enabled = true;
-                
-                goButton.Text = "STOP!";
-
-                int formationStyle = Convert.ToInt32(totalSimulatedObjects_dd.SelectedIndex);
-
                 double imuGyroAccuracy = Convert.ToDouble(IMU_GyroAccuracy_dd.Text);
                 double imuAccelAccuracy = Convert.ToDouble(IMU_AccelAccuracy_dd.Text);
                 double gpsLoss = Convert.ToDouble(gpsLoss_tb.Text);
 
-                Position origin = new Position(x1, y1, z1);
-                Position destination = new Position(x2, y2, z2);                
+                StringBuilder sb = new StringBuilder();
+                StreamWriter logFile = null;
 
-                stv.speedTrackbarValue = speedTrackBar.Value;
-                controller = new SimulatorController(xyAxisPanel, simulationPictureBox, zAxisPictureBox, stv,
-                    formationStyle, simulationDuration, origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss);
-
-                tokenSource = new CancellationTokenSource();
-
-                Application.DoEvents();
-                await Task.Run(() =>
+                if (Log_cb.Checked)
                 {
-                    controller.Run(tokenSource);
-                });
+                    logFile = new StreamWriter(@"C:\temp\cosc636.csv");
+                    sb.Append("totalSimulationDistance " + totalSimulationDistance.ToString());
+                    sb.Append(",");
+                    sb.Append("simulationDuration " + simulationDuration.ToString());
+                    sb.Append(",");
+                    sb.Append("imuGyroAccuracy " + imuGyroAccuracy.ToString());
+                    sb.Append(",");
+                    sb.Append("imuAccelAccuracy " + imuAccelAccuracy.ToString());
+                    sb.Append(",");
+                    sb.Append("gpsLoss " + gpsLoss.ToString());
+                    logFile.WriteLine(sb.ToString());
+                }                
 
-                foreach (var info in controller.getDistances())
+                for (int simCount = 0; !tokenSource.Token.IsCancellationRequested && simCount < repeatCount; simCount++)
                 {
-                    double distance = info.Item1;
-                    string descript = info.Item2;
-                    resultsListBox.Items.Add(Math.Round(distance, 2).ToString()+" "+descript);
+                    resultsListBox.Items.Clear();
+
+                    clearXY();
+                    paintZ();
+
+                    simulationRunning = true;
+                    
+                    infoLabel.Text = "Distance = " + Math.Round(totalSimulationDistance, 0).ToString() + " feet. Expected Flight Duration in Seconds = " + simulationDuration.ToString();
+
+                    stopwatch.Reset();
+                    stopwatch.Start();
+                    mainTimer.Interval = 100;
+                    mainTimer.Enabled = true;
+
+                    goButton.Text = "STOP!";
+
+                    int formationStyle = Convert.ToInt32(totalSimulatedObjects_dd.SelectedIndex);                    
+
+                    Position origin = new Position(x1, y1, z1);
+                    Position destination = new Position(x2, y2, z2);
+
+                    stv.speedTrackbarValue = speedTrackBar.Value;
+                    controller = new SimulatorController(xyAxisPanel, simulationPictureBox, zAxisPictureBox, stv,
+                        formationStyle, simulationDuration, origin, destination, velocity, imuGyroAccuracy, imuAccelAccuracy, gpsLoss);
+                    
+                    Application.DoEvents();
+                    await Task.Run(() =>
+                    {
+                        controller.Run(tokenSource);
+                    });
+
+                    sb.Clear();
+                    foreach (var info in controller.getDistances())
+                    {
+                        double distance = info.Item1;
+                        string descript = info.Item2;
+                        sb.Append(distance.ToString());
+                        sb.Append(",");
+                        // Assume any return value in description is to indicate NOGPS
+                        sb.Append(descript.Length>0 ? "0" : "1");
+                        sb.Append(",");
+                        resultsListBox.Items.Add(Math.Round(distance, 2).ToString() + " " + descript);
+                    }
+                    if (logFile != null)
+                    {
+                        if (sb.Length > 0)
+                        {
+                            sb.Remove(sb.Length - 1, 1);
+                        }
+                        logFile.WriteLine(sb.ToString());
+                    }
+                }
+                if (logFile!=null)
+                {
+                    logFile.Flush();
+                    logFile.Close();
                 }
             }
             else

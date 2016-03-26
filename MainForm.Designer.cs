@@ -55,6 +55,9 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.rightPanel = new System.Windows.Forms.Panel();
             this.bottomPanel = new System.Windows.Forms.Panel();
+            this.Log_cb = new System.Windows.Forms.CheckBox();
+            this.Repeat_tb = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.xyAxisPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.destPicBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.origPicBox)).BeginInit();
@@ -332,6 +335,9 @@
             // rightPanel
             // 
             this.rightPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.rightPanel.Controls.Add(this.label9);
+            this.rightPanel.Controls.Add(this.Repeat_tb);
+            this.rightPanel.Controls.Add(this.Log_cb);
             this.rightPanel.Controls.Add(this.zAxisBoard);
             this.rightPanel.Controls.Add(this.label8);
             this.rightPanel.Controls.Add(this.panel1);
@@ -361,6 +367,35 @@
             this.bottomPanel.Name = "bottomPanel";
             this.bottomPanel.Size = new System.Drawing.Size(909, 62);
             this.bottomPanel.TabIndex = 24;
+            // 
+            // Log_cb
+            // 
+            this.Log_cb.AutoSize = true;
+            this.Log_cb.Location = new System.Drawing.Point(351, 607);
+            this.Log_cb.Name = "Log_cb";
+            this.Log_cb.Size = new System.Drawing.Size(70, 17);
+            this.Log_cb.TabIndex = 23;
+            this.Log_cb.Text = "Log Data";
+            this.Log_cb.UseVisualStyleBackColor = true;
+            // 
+            // Repeat_tb
+            // 
+            this.Repeat_tb.Location = new System.Drawing.Point(348, 574);
+            this.Repeat_tb.Name = "Repeat_tb";
+            this.Repeat_tb.Size = new System.Drawing.Size(73, 20);
+            this.Repeat_tb.TabIndex = 24;
+            this.Repeat_tb.Text = "1";
+            this.Repeat_tb.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(305, 558);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(116, 13);
+            this.label9.TabIndex = 25;
+            this.label9.Text = "Repeat/Test Count";
             // 
             // MainForm
             // 
@@ -420,6 +455,9 @@
         private System.Windows.Forms.Panel bottomPanel;
         private System.Windows.Forms.PictureBox origPicBox;
         private System.Windows.Forms.PictureBox destPicBox;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox Repeat_tb;
+        private System.Windows.Forms.CheckBox Log_cb;
     }
 }
 

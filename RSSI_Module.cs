@@ -10,17 +10,35 @@ namespace COSCSimulator
     {
         private const double accuracyMin = -3.0;
         private const double accuracyMax = 3.0;
+        private const int roundTripTime = 170; // ms
+
+        private int rttTicks = 0;
+        private int halfRTTticks = 0;
 
         private List<SimulatedObject> nodes = new List<SimulatedObject>();
         public RSSI_Module()
         {
-
+            rttTicks = roundTripTime * Convert.ToInt32(SimulatorController.ticksPerSecond / 1000.0);
+            halfRTTticks = rttTicks / 2;
         }
 
-        public bool shouldMeasure(int ticks)
+        public bool transmitMeasurementRequest(int ticks)
         {
-            // Poll every second
+            // Request a measure every second
             return nodes.Count>=3 && ticks % SimulatorController.ticksPerSecond == 0;
+        }
+
+        public bool remoteTakeMeasurement(int ticks)
+        {
+            // Remote receives request every second+90ms
+            int i = (roundTripTime * Convert.ToInt32(SimulatorController.ticksPerSecond / 1000.0)) / 2;
+            return nodes.Count >= 3 && (ticks + halfRTTticks) % SimulatorController.ticksPerSecond == 0;
+        }
+
+        public bool receiveMeasurementRequest(int ticks)
+        {
+            // Receive measurement every second+180ms            
+            return nodes.Count >= 3 && (ticks + rttTicks) % SimulatorController.ticksPerSecond == 0;
         }
 
         public void assignNodes(List<SimulatedObject> nodes)

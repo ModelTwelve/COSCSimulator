@@ -17,6 +17,8 @@ namespace COSCSimulator
         private bool activePerfectPosition, activeGPS, activeIMU, activeRSSI;
         private double gpsLossInTicks = 0;
 
+        private Position calculatedTrilateratePosition = null;
+
         public PositionProtocolLogic(double imuGyroAccuracy, double imuAccelAccuracy, double gpsLoss)
         {
             activePerfectPosition = false;
@@ -66,14 +68,13 @@ namespace COSCSimulator
 
                 gps.Calculate(expectedPosition, actualPosition);
             }            
-            else if ( (activeRSSI) && (rssi.shouldMeasure(ticks)) ) 
+            else if ( (activeRSSI) && (rssi.receiveMeasurementRequest(ticks)) && (calculatedTrilateratePosition!= null) ) 
             {
                 actualPosition.x += expectedXTickDistance;
                 actualPosition.y += expectedYTickDistance;
                 actualPosition.z += expectedZTickDistance;
-
-                Position calcPosition = rssi.trilaterate(actualPosition);
-                expectedPosition.Clone(calcPosition);
+                
+                expectedPosition.Clone(calculatedTrilateratePosition);
                 
                 // Reset the IMU for new theta
                 imu.reset();
@@ -88,14 +89,25 @@ namespace COSCSimulator
             {
                 throw new Exception("ERROR: No other position measuring devices exist!");
             }
-            
+
+            if ((activeRSSI) && (rssi.transmitMeasurementRequest(ticks)))
+            {
+                // We need to request a measurement
+                // Nothing really to do at the moment but right here's where we could remember "when" the request was made 
+            }
+            else if ((activeRSSI) && (rssi.remoteTakeMeasurement(ticks)))
+            {
+                // We need to request a measurement        
+                calculatedTrilateratePosition = rssi.trilaterate(actualPosition);
+            }
+
         }
 
         private bool shouldMeasure()
         {
             return activePerfectPosition || activeIMU || 
                 ((activeGPS) && (gps.shouldMeasure(ticks))) ||
-                ((activeRSSI) && (rssi.shouldMeasure(ticks)))
+                ((activeRSSI) && (rssi.receiveMeasurementRequest(ticks)))
                 ;
         }
 
