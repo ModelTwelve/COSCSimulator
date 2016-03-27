@@ -54,12 +54,14 @@
             this.label8 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rightPanel = new System.Windows.Forms.Panel();
+            this.label10 = new System.Windows.Forms.Label();
+            this.RTT_tb = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.Repeat_tb = new System.Windows.Forms.TextBox();
             this.Log_cb = new System.Windows.Forms.CheckBox();
             this.bottomPanel = new System.Windows.Forms.Panel();
-            this.label10 = new System.Windows.Forms.Label();
-            this.RTT_tb = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.Velocity_tb = new System.Windows.Forms.TextBox();
             this.xyAxisPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.destPicBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.origPicBox)).BeginInit();
@@ -152,9 +154,9 @@
             this.goButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.goButton.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.goButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.goButton.Location = new System.Drawing.Point(276, 489);
+            this.goButton.Location = new System.Drawing.Point(113, 566);
             this.goButton.Name = "goButton";
-            this.goButton.Size = new System.Drawing.Size(145, 51);
+            this.goButton.Size = new System.Drawing.Size(153, 51);
             this.goButton.TabIndex = 6;
             this.goButton.Text = "GO!";
             this.goButton.UseVisualStyleBackColor = true;
@@ -237,7 +239,7 @@
             // speedTrackBar
             // 
             this.speedTrackBar.LargeChange = 1;
-            this.speedTrackBar.Location = new System.Drawing.Point(275, 438);
+            this.speedTrackBar.Location = new System.Drawing.Point(275, 498);
             this.speedTrackBar.Minimum = 1;
             this.speedTrackBar.Name = "speedTrackBar";
             this.speedTrackBar.Size = new System.Drawing.Size(146, 45);
@@ -250,7 +252,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(316, 422);
+            this.label5.Location = new System.Drawing.Point(316, 482);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(105, 13);
             this.label5.TabIndex = 15;
@@ -306,9 +308,9 @@
             // 
             // gpsLoss_tb
             // 
-            this.gpsLoss_tb.Location = new System.Drawing.Point(386, 376);
+            this.gpsLoss_tb.Location = new System.Drawing.Point(371, 456);
             this.gpsLoss_tb.Name = "gpsLoss_tb";
-            this.gpsLoss_tb.Size = new System.Drawing.Size(35, 20);
+            this.gpsLoss_tb.Size = new System.Drawing.Size(52, 20);
             this.gpsLoss_tb.TabIndex = 20;
             this.gpsLoss_tb.Text = "10";
             this.gpsLoss_tb.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -317,7 +319,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(275, 379);
+            this.label8.Location = new System.Drawing.Point(313, 440);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(108, 13);
             this.label8.TabIndex = 21;
@@ -337,6 +339,8 @@
             // rightPanel
             // 
             this.rightPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.rightPanel.Controls.Add(this.label11);
+            this.rightPanel.Controls.Add(this.Velocity_tb);
             this.rightPanel.Controls.Add(this.label10);
             this.rightPanel.Controls.Add(this.RTT_tb);
             this.rightPanel.Controls.Add(this.label9);
@@ -362,6 +366,25 @@
             this.rightPanel.Name = "rightPanel";
             this.rightPanel.Size = new System.Drawing.Size(442, 636);
             this.rightPanel.TabIndex = 23;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(292, 401);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(129, 13);
+            this.label10.TabIndex = 27;
+            this.label10.Text = "Packet RTT (millisec)";
+            // 
+            // RTT_tb
+            // 
+            this.RTT_tb.Location = new System.Drawing.Point(369, 417);
+            this.RTT_tb.Name = "RTT_tb";
+            this.RTT_tb.Size = new System.Drawing.Size(52, 20);
+            this.RTT_tb.TabIndex = 26;
+            this.RTT_tb.Text = "170";
+            this.RTT_tb.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label9
             // 
@@ -401,24 +424,25 @@
             this.bottomPanel.Size = new System.Drawing.Size(909, 62);
             this.bottomPanel.TabIndex = 24;
             // 
-            // label10
+            // label11
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(237, 347);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(129, 13);
-            this.label10.TabIndex = 27;
-            this.label10.Text = "Packet RTT (millisec)";
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(334, 360);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(87, 13);
+            this.label11.TabIndex = 29;
+            this.label11.Text = "Velocity (mph)";
             // 
-            // RTT_tb
+            // Velocity_tb
             // 
-            this.RTT_tb.Location = new System.Drawing.Point(369, 344);
-            this.RTT_tb.Name = "RTT_tb";
-            this.RTT_tb.Size = new System.Drawing.Size(52, 20);
-            this.RTT_tb.TabIndex = 26;
-            this.RTT_tb.Text = "170";
-            this.RTT_tb.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Velocity_tb.Location = new System.Drawing.Point(367, 376);
+            this.Velocity_tb.Name = "Velocity_tb";
+            this.Velocity_tb.Size = new System.Drawing.Size(52, 20);
+            this.Velocity_tb.TabIndex = 28;
+            this.Velocity_tb.Text = "30";
+            this.Velocity_tb.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Velocity_tb.Leave += new System.EventHandler(this.Velocity_tb_Leave);
             // 
             // MainForm
             // 
@@ -483,6 +507,8 @@
         private System.Windows.Forms.CheckBox Log_cb;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox RTT_tb;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox Velocity_tb;
     }
 }
 

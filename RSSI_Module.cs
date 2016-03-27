@@ -56,10 +56,12 @@ namespace COSCSimulator
             Position actualP3 = nodes[2].actualPosition;
 
             // RSSI should be able to get distance measurement to within 3 feet
+            // For this we use the actual distance
             double r1 = Position.distanceFrom(actualP1, actualP0) + SimRandom.GetRandom(accuracyMin, accuracyMax);
             double r2 = Position.distanceFrom(actualP2, actualP0) + SimRandom.GetRandom(accuracyMin, accuracyMax);
             double r3 = Position.distanceFrom(actualP3, actualP0) + SimRandom.GetRandom(accuracyMin, accuracyMax);
 
+            // Now we trilaterate using the expected positions but use the RSSI distance/radius calculations from above.
             var rv = Position.trilaterate(expectedP1, expectedP2, expectedP3, r1, r2, r3);
 
             return rv;

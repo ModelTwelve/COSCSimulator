@@ -38,7 +38,7 @@ namespace COSCSimulator
         public MainForm()
         {
             InitializeComponent();
-            
+
             mainTimer.Enabled = false;
             mainTimer.Interval = 1000;
             mainTimer.Elapsed += new System.Timers.ElapsedEventHandler(mainTimer_Tick);            
@@ -183,6 +183,20 @@ namespace COSCSimulator
 
                 paintZ();
             }
+        }        
+
+        private void Velocity_tb_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                velocity = Convert.ToInt32(Velocity_tb.Text);
+                velocity *= 5280;
+                velocity /= 3600; // ft per sec
+            }
+            catch
+            {
+
+            }
         }
 
         private void mainTimer_Tick(object sender, EventArgs e)
@@ -221,11 +235,8 @@ namespace COSCSimulator
         {
             if (!simulationRunning)
             {
-                gpsLoss_tb.Enabled = false;
-                totalSimulatedObjects_dd.Enabled = false;
-                IMU_AccelAccuracy_dd.Enabled = false;
-                IMU_GyroAccuracy_dd.Enabled = false;
-                
+                enableORdisable(false);
+
                 origPicBox.Visible = false;
                 destPicBox.Visible = false;
 
@@ -351,10 +362,19 @@ namespace COSCSimulator
             goButton.Text = "GO!";
             simulationRunning = false;
 
-            gpsLoss_tb.Enabled = true;
-            totalSimulatedObjects_dd.Enabled = true;
-            IMU_AccelAccuracy_dd.Enabled = true;
-            IMU_GyroAccuracy_dd.Enabled = true;
+            enableORdisable(true);
+        }
+
+        private void enableORdisable(bool which)
+        {
+            gpsLoss_tb.Enabled = which;
+            Velocity_tb.Enabled = which;
+            RTT_tb.Enabled = which;
+            Repeat_tb.Enabled = which;
+            totalSimulatedObjects_dd.Enabled = which;
+            IMU_AccelAccuracy_dd.Enabled = which;
+            IMU_GyroAccuracy_dd.Enabled = which;
+            Log_cb.Enabled = which;
         }
     }
 }
