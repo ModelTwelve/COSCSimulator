@@ -13,6 +13,8 @@ namespace COSCSimulator
 
         private int rttTicks = 0;
         private int halfRTTticks = 0;
+        private int nextRequest = 0;
+        private int nextReceive = 0;
 
         private List<SimulatedObject> nodes = new List<SimulatedObject>();
         public RSSI_Module(int roundTripTime)
@@ -22,22 +24,34 @@ namespace COSCSimulator
             halfRTTticks = rttTicks / 2;
         }
 
-        public bool transmitMeasurementRequest(int ticks)
+        public bool remoteMeasurementTransmitRequest(int ticks)
         {
             // Request a measure every second
-            return nodes.Count>=3 && ticks % SimulatorController.ticksPerSecond == 0;
+            bool rv = nodes.Count >= 3 && ticks % SimulatorController.ticksPerSecond == 0;
+            if ( (rv)&&(nextRequest==0)&&(nextReceive==0) ) {
+                // Currently only allowing one outstanding request
+                nextRequest = ticks + halfRTTticks;
+                nextReceive = ticks + rttTicks;
+            }
+            return rv;
         }
 
-        public bool remoteTakeMeasurement(int ticks)
+        public bool remoteMeasurementRequestReceived(int ticks)
         {
-            // Remote receives request every second+90ms
-            return nodes.Count >= 3 && (ticks + halfRTTticks) % SimulatorController.ticksPerSecond == 0;
+            // Remote receives request 1/2 RTT from transmist
+            return nodes.Count >= 3 && ticks == nextRequest;
         }
 
-        public bool receiveMeasurementRequest(int ticks)
+        public bool remoteMeasurementRequestReturned(int ticks)
         {
-            // Receive measurement every second+180ms            
-            return nodes.Count >= 3 && (ticks + rttTicks) % SimulatorController.ticksPerSecond == 0;
+            // Receive measurement RTT from transmist
+            bool rv = nodes.Count >= 3 && ticks == nextReceive;
+            if (rv) {
+                // Reset packet counters
+                nextRequest = 0;
+                nextReceive = 0;
+            }
+            return rv;
         }
 
         public void assignNodes(List<SimulatedObject> nodes)

@@ -52,6 +52,16 @@ namespace COSCSimulator
             double expectedXTickDistance, double expectedYTickDistance, double expectedZTickDistance,
             double theta, double phi, double radius)
         {
+            if ((activeRSSI) && (rssi.remoteMeasurementTransmitRequest(ticks))) {
+                // We need to request a measurement
+                // Nothing really to do at the moment but right here's where we could remember "when" the request was made 
+            }
+
+            if ((activeRSSI) && (rssi.remoteMeasurementRequestReceived(ticks))) {
+                // We need to request a measurement        
+                calculatedTrilateratePosition = rssi.trilaterate(actualPosition);
+            }
+
             if (activePerfectPosition)
             {
                 actualPosition.x += expectedXTickDistance;
@@ -68,7 +78,7 @@ namespace COSCSimulator
 
                 gps.Calculate(expectedPosition, actualPosition);
             }            
-            else if ( (activeRSSI) && (rssi.receiveMeasurementRequest(ticks)) && (calculatedTrilateratePosition!= null) ) 
+            else if ( (activeRSSI) && (rssi.remoteMeasurementRequestReturned(ticks)) && (calculatedTrilateratePosition!= null) ) 
             {
                 actualPosition.x += expectedXTickDistance;
                 actualPosition.y += expectedYTickDistance;
@@ -89,25 +99,13 @@ namespace COSCSimulator
             {
                 throw new Exception("ERROR: No other position measuring devices exist!");
             }
-
-            if ((activeRSSI) && (rssi.transmitMeasurementRequest(ticks)))
-            {
-                // We need to request a measurement
-                // Nothing really to do at the moment but right here's where we could remember "when" the request was made 
-            }
-            else if ((activeRSSI) && (rssi.remoteTakeMeasurement(ticks)))
-            {
-                // We need to request a measurement        
-                calculatedTrilateratePosition = rssi.trilaterate(actualPosition);
-            }
-
         }
 
         private bool shouldMeasure()
         {
             return activePerfectPosition || activeIMU || 
                 ((activeGPS) && (gps.shouldMeasure(ticks))) ||
-                ((activeRSSI) && (rssi.receiveMeasurementRequest(ticks)))
+                ((activeRSSI) && (rssi.remoteMeasurementRequestReturned(ticks)))
                 ;
         }
 
