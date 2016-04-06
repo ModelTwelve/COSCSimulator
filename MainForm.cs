@@ -271,17 +271,23 @@ namespace COSCSimulator
 
                 if (Log_cb.Checked)
                 {
-                    logFile = new StreamWriter(@"C:\temp\cosc636.csv");
-                    sb.Append("totalSimulationDistance " + totalSimulationDistance.ToString());
-                    sb.Append(",");
-                    sb.Append("simulationDuration " + simulationDuration.ToString());
-                    sb.Append(",");
-                    sb.Append("imuGyroAccuracy " + imuGyroAccuracy.ToString());
-                    sb.Append(",");
-                    sb.Append("imuAccelAccuracy " + imuAccelAccuracy.ToString());
-                    sb.Append(",");
-                    sb.Append("gpsLoss " + gpsLoss.ToString());
-                    logFile.WriteLine(sb.ToString());
+                    string logFileName = @"C:\temp\cosc636.csv";
+                    try {                        
+                        logFile = new StreamWriter(logFileName);
+                        sb.Append("totalSimulationDistance " + totalSimulationDistance.ToString());
+                        sb.Append(",");
+                        sb.Append("simulationDuration " + simulationDuration.ToString());
+                        sb.Append(",");
+                        sb.Append("imuGyroAccuracy " + imuGyroAccuracy.ToString());
+                        sb.Append(",");
+                        sb.Append("imuAccelAccuracy " + imuAccelAccuracy.ToString());
+                        sb.Append(",");
+                        sb.Append("gpsLoss " + gpsLoss.ToString());
+                        logFile.WriteLine(sb.ToString());
+                    }
+                    catch {
+                        MessageBox.Show("Path to " + logFileName + " cannot be written to.");
+                    }
                 }                
 
                 for (int simCount = 0; !tokenSource.Token.IsCancellationRequested && simCount < repeatCount; simCount++)
@@ -323,8 +329,7 @@ namespace COSCSimulator
                         double distance = info.Item1;
                         string descript = info.Item2;
 
-                        if (logFile!=null)
-                        {
+                        if (Log_cb.Checked) {
                             // We cut it short by GPS length to avoid last minute bad decisions
                             distance -= GPS_Module.maxRadius;
                         }
